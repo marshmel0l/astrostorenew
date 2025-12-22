@@ -94,34 +94,19 @@ export async function fetchGames(): Promise<Game[]> {
   const games: Game[] = [];
 
   for (const mockGame of mockGames) {
-    try {
-      // In production, fetch actual IGDB data here
-      const image = await getGameImage(mockGame.slug || mockGame.title);
+    // In production, fetch actual IGDB data here
+    const image = getGameImage(mockGame.slug || mockGame.title);
 
-      games.push({
-        id: mockGame.slug || mockGame.title,
-        title: mockGame.title,
-        image: image,
-        rating: getRatingScore(),
-        popularity: getPopularityScore(mockGame.title),
-        price: getRandomPrice(),
-        igdbId: mockGame.igdbId,
-        slug: mockGame.slug,
-      });
-    } catch (error) {
-      console.error(`Error fetching data for ${mockGame.title}:`, error);
-      // Still add the game with a placeholder image
-      games.push({
-        id: mockGame.slug || mockGame.title,
-        title: mockGame.title,
-        image: `https://via.placeholder.com/300x450?text=${encodeURIComponent(mockGame.title)}`,
-        rating: getRatingScore(),
-        popularity: getPopularityScore(mockGame.title),
-        price: getRandomPrice(),
-        igdbId: mockGame.igdbId,
-        slug: mockGame.slug,
-      });
-    }
+    games.push({
+      id: mockGame.slug || mockGame.title,
+      title: mockGame.title,
+      image: image,
+      rating: getRatingScore(),
+      popularity: getPopularityScore(mockGame.title),
+      price: getRandomPrice(),
+      igdbId: mockGame.igdbId,
+      slug: mockGame.slug,
+    });
   }
 
   return games;
