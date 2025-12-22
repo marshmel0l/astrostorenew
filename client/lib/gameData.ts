@@ -49,50 +49,44 @@ function getRandomPrice(): number {
   return 1.49 + Math.random() * 2;
 }
 
-// Function to get game image from SteamGridDB
-async function getGameImageFromSteamGridDB(
-  gameSlug: string
-): Promise<string> {
-  try {
-    // SteamGridDB has a public API for getting game art
-    // Using a public endpoint for game covers
-    const response = await fetch(
-      `https://www.steamgriddb.com/api/v2/search/autocomplete/${encodeURIComponent(gameSlug)}`,
-      {
-        headers: {
-          "Accept": "application/json",
-        },
-      }
-    );
-
-    if (response.ok) {
-      const data = await response.json();
-      if (data.data && data.data.length > 0) {
-        const gameId = data.data[0].id;
-        // Return a cover art URL (vertical cover, no platform banner)
-        return `https://www.steamgriddb.com/api/v2/grids/game/${gameId}/vertical`;
-      }
-    }
-  } catch (error) {
-    console.error("Error fetching from SteamGridDB:", error);
-  }
-
-  // Fallback to placeholder image service
-  return `https://api.placeholder.com/300x450?text=${encodeURIComponent(gameSlug)}`;
-}
+// Map of game slugs to placeholder image URLs
+const gameImageMap: Record<string, string> = {
+  "elden-ring": "https://images.unsplash.com/photo-1538481143235-f2fcccb439ab?w=400&h=600&fit=crop",
+  "baldurs-gate-3": "https://images.unsplash.com/photo-1511379938547-c1f69b13d835?w=400&h=600&fit=crop",
+  "cyberpunk-2077": "https://images.unsplash.com/photo-1536718356157-6c59e68b3f7f?w=400&h=600&fit=crop",
+  "the-witcher-3": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=600&fit=crop",
+  "hogwarts-legacy": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&h=600&fit=crop",
+  "starfield": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&h=600&fit=crop",
+  "final-fantasy-vii-rebirth": "https://images.unsplash.com/photo-1566301969489-cebd086476d8?w=400&h=600&fit=crop",
+  "dragon-age-the-veilguard": "https://images.unsplash.com/photo-1533350335684-c1fd149e9e51?w=400&h=600&fit=crop",
+  "stalker-2-heart-of-chornobyl": "https://images.unsplash.com/photo-1538481143235-f2fcccb439ab?w=400&h=600&fit=crop",
+  "metal-gear-solid-delta-snake-eater": "https://images.unsplash.com/photo-1511379938547-c1f69b13d835?w=400&h=600&fit=crop",
+  "tekken-8": "https://images.unsplash.com/photo-1536718356157-6c59e68b3f7f?w=400&h=600&fit=crop",
+  "dragons-dogma-2": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=600&fit=crop",
+};
 
 // Function to get game image with fallback
-async function getGameImage(gameSlug: string): Promise<string> {
-  // Try SteamGridDB first
-  const image = await getGameImageFromSteamGridDB(gameSlug);
-  
-  // If still no image, use a generated placeholder with game theme
-  if (!image || image.includes("placeholder")) {
-    // Using a free game cover API as fallback
-    return `https://images.igdb.com/igdb/image/upload/t_cover_big/${gameSlug}.jpg`;
+function getGameImage(gameSlug: string): string {
+  // Try to use the predefined image map first
+  if (gameImageMap[gameSlug]) {
+    return gameImageMap[gameSlug];
   }
 
-  return image;
+  // Fallback to a generic gradient placeholder
+  const colors = [
+    "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+    "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
+    "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)",
+    "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
+    "linear-gradient(135deg, #30cfd0 0%, #330867 100%)",
+  ];
+
+  const hash = gameSlug.split("").reduce((h, c) => h + c.charCodeAt(0), 0);
+  const colorIndex = hash % colors.length;
+
+  // Use placeholder.co with a gradient-like background using data URI
+  return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='450'%3E%3Crect fill='%23667eea' width='300' height='450'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='20' fill='white' text-anchor='middle' dominant-baseline='middle' text-transform='uppercase'%3E${encodeURIComponent(gameSlug.substring(0, 20))}%3C/text%3E%3C/svg%3E`;
 }
 
 // Main function to fetch games
