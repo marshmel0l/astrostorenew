@@ -9,111 +9,164 @@ export interface Game {
   slug?: string;
 }
 
-// Mock game data - In production, this would fetch from IGDB API
-const mockGames = [
-  { title: "Elden Ring", igdbId: 159677, slug: "elden-ring" },
-  { title: "Baldur's Gate 3", igdbId: 120437, slug: "baldurs-gate-3" },
-  { title: "Cyberpunk 2077", igdbId: 1020, slug: "cyberpunk-2077" },
-  { title: "The Witcher 3", igdbId: 1020, slug: "the-witcher-3" },
-  { title: "Hogwarts Legacy", igdbId: 136545, slug: "hogwarts-legacy" },
-  { title: "Starfield", igdbId: 133440, slug: "starfield" },
-  { title: "Final Fantasy VII Rebirth", igdbId: 130899, slug: "final-fantasy-vii-rebirth" },
-  { title: "Dragon Age: The Veilguard", igdbId: 106850, slug: "dragon-age-the-veilguard" },
-  { title: "S.T.A.L.K.E.R. 2", igdbId: 31399, slug: "stalker-2-heart-of-chornobyl" },
-  { title: "Metal Gear Solid Delta", igdbId: 102667, slug: "metal-gear-solid-delta-snake-eater" },
-  { title: "Tekken 8", igdbId: 120420, slug: "tekken-8" },
-  { title: "Dragon's Dogma 2", igdbId: 120422, slug: "dragons-dogma-2" },
+// Game data with preloaded images - no external API calls
+const gameDatabase: Game[] = [
+  {
+    id: "elden-ring",
+    title: "Elden Ring",
+    slug: "elden-ring",
+    igdbId: 159677,
+    image:
+      "https://images.unsplash.com/photo-1538481143235-f2fcccb439ab?w=400&h=600&fit=crop",
+    rating: 8.5,
+    popularity: 95,
+    price: 2.49,
+  },
+  {
+    id: "baldurs-gate-3",
+    title: "Baldur's Gate 3",
+    slug: "baldurs-gate-3",
+    igdbId: 120437,
+    image:
+      "https://images.unsplash.com/photo-1511379938547-c1f69b13d835?w=400&h=600&fit=crop",
+    rating: 9.2,
+    popularity: 92,
+    price: 2.99,
+  },
+  {
+    id: "cyberpunk-2077",
+    title: "Cyberpunk 2077",
+    slug: "cyberpunk-2077",
+    igdbId: 1020,
+    image:
+      "https://images.unsplash.com/photo-1536718356157-6c59e68b3f7f?w=400&h=600&fit=crop",
+    rating: 8.1,
+    popularity: 88,
+    price: 1.99,
+  },
+  {
+    id: "the-witcher-3",
+    title: "The Witcher 3",
+    slug: "the-witcher-3",
+    igdbId: 1020,
+    image:
+      "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=600&fit=crop",
+    rating: 8.4,
+    popularity: 85,
+    price: 2.29,
+  },
+  {
+    id: "hogwarts-legacy",
+    title: "Hogwarts Legacy",
+    slug: "hogwarts-legacy",
+    igdbId: 136545,
+    image:
+      "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&h=600&fit=crop",
+    rating: 7.8,
+    popularity: 82,
+    price: 2.49,
+  },
+  {
+    id: "starfield",
+    title: "Starfield",
+    slug: "starfield",
+    igdbId: 133440,
+    image:
+      "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&h=600&fit=crop",
+    rating: 7.5,
+    popularity: 78,
+    price: 3.49,
+  },
+  {
+    id: "final-fantasy-vii-rebirth",
+    title: "Final Fantasy VII Rebirth",
+    slug: "final-fantasy-vii-rebirth",
+    igdbId: 130899,
+    image:
+      "https://images.unsplash.com/photo-1566301969489-cebd086476d8?w=400&h=600&fit=crop",
+    rating: 8.9,
+    popularity: 80,
+    price: 3.29,
+  },
+  {
+    id: "dragon-age-the-veilguard",
+    title: "Dragon Age: The Veilguard",
+    slug: "dragon-age-the-veilguard",
+    igdbId: 106850,
+    image:
+      "https://images.unsplash.com/photo-1533350335684-c1fd149e9e51?w=400&h=600&fit=crop",
+    rating: 8.3,
+    popularity: 75,
+    price: 2.79,
+  },
+  {
+    id: "stalker-2-heart-of-chornobyl",
+    title: "S.T.A.L.K.E.R. 2",
+    slug: "stalker-2-heart-of-chornobyl",
+    igdbId: 31399,
+    image:
+      "https://images.unsplash.com/photo-1538481143235-f2fcccb439ab?w=400&h=600&fit=crop",
+    rating: 8.7,
+    popularity: 80,
+    price: 1.89,
+  },
+  {
+    id: "metal-gear-solid-delta-snake-eater",
+    title: "Metal Gear Solid Delta",
+    slug: "metal-gear-solid-delta-snake-eater",
+    igdbId: 102667,
+    image:
+      "https://images.unsplash.com/photo-1511379938547-c1f69b13d835?w=400&h=600&fit=crop",
+    rating: 8.6,
+    popularity: 77,
+    price: 2.99,
+  },
+  {
+    id: "tekken-8",
+    title: "Tekken 8",
+    slug: "tekken-8",
+    igdbId: 120420,
+    image:
+      "https://images.unsplash.com/photo-1536718356157-6c59e68b3f7f?w=400&h=600&fit=crop",
+    rating: 8.2,
+    popularity: 72,
+    price: 2.49,
+  },
+  {
+    id: "dragons-dogma-2",
+    title: "Dragon's Dogma 2",
+    slug: "dragons-dogma-2",
+    igdbId: 120422,
+    image:
+      "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=600&fit=crop",
+    rating: 8.5,
+    popularity: 78,
+    price: 2.89,
+  },
 ];
 
-// Function to get popularity score (for demo, based on title)
-function getPopularityScore(title: string): number {
-  const popularGames = [
-    "Elden Ring",
-    "Baldur's Gate 3",
-    "Cyberpunk 2077",
-    "Starfield",
-  ];
-  if (popularGames.includes(title)) {
-    return 75 + Math.random() * 25;
-  }
-  return 30 + Math.random() * 50;
-}
-
-// Function to get rating score
-function getRatingScore(): number {
-  return 7 + Math.random() * 3;
-}
-
-// Function to get random price between 1.49 and 3.49
-function getRandomPrice(): number {
-  return 1.49 + Math.random() * 2;
-}
-
-// Map of game slugs to placeholder image URLs
-const gameImageMap: Record<string, string> = {
-  "elden-ring": "https://images.unsplash.com/photo-1538481143235-f2fcccb439ab?w=400&h=600&fit=crop",
-  "baldurs-gate-3": "https://images.unsplash.com/photo-1511379938547-c1f69b13d835?w=400&h=600&fit=crop",
-  "cyberpunk-2077": "https://images.unsplash.com/photo-1536718356157-6c59e68b3f7f?w=400&h=600&fit=crop",
-  "the-witcher-3": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=600&fit=crop",
-  "hogwarts-legacy": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&h=600&fit=crop",
-  "starfield": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&h=600&fit=crop",
-  "final-fantasy-vii-rebirth": "https://images.unsplash.com/photo-1566301969489-cebd086476d8?w=400&h=600&fit=crop",
-  "dragon-age-the-veilguard": "https://images.unsplash.com/photo-1533350335684-c1fd149e9e51?w=400&h=600&fit=crop",
-  "stalker-2-heart-of-chornobyl": "https://images.unsplash.com/photo-1538481143235-f2fcccb439ab?w=400&h=600&fit=crop",
-  "metal-gear-solid-delta-snake-eater": "https://images.unsplash.com/photo-1511379938547-c1f69b13d835?w=400&h=600&fit=crop",
-  "tekken-8": "https://images.unsplash.com/photo-1536718356157-6c59e68b3f7f?w=400&h=600&fit=crop",
-  "dragons-dogma-2": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=600&fit=crop",
-};
-
-// Function to get game image with fallback
-function getGameImage(gameSlug: string): string {
-  // Try to use the predefined image map first
-  if (gameImageMap[gameSlug]) {
-    return gameImageMap[gameSlug];
-  }
-
-  // Fallback to a generic gradient placeholder
-  const colors = [
-    "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-    "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-    "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
-    "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)",
-    "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
-    "linear-gradient(135deg, #30cfd0 0%, #330867 100%)",
-  ];
-
-  const hash = gameSlug.split("").reduce((h, c) => h + c.charCodeAt(0), 0);
-  const colorIndex = hash % colors.length;
-
-  // Use placeholder.co with a gradient-like background using data URI
-  return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='450'%3E%3Crect fill='%23667eea' width='300' height='450'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='20' fill='white' text-anchor='middle' dominant-baseline='middle' text-transform='uppercase'%3E${encodeURIComponent(gameSlug.substring(0, 20))}%3C/text%3E%3C/svg%3E`;
+// Apply randomization to prices and ratings for variety
+function randomizeGameData(games: Game[]): Game[] {
+  return games.map((game) => ({
+    ...game,
+    price: 1.49 + Math.random() * 2.0, // Random price between 1.49 and 3.49
+    rating: 7 + Math.random() * 3, // Random rating between 7 and 10
+    popularity: Math.max(50, game.popularity + (Math.random() - 0.5) * 20), // Slight variation
+  }));
 }
 
 // Main function to fetch games
 export async function fetchGames(): Promise<Game[]> {
-  const games: Game[] = [];
-
-  for (const mockGame of mockGames) {
-    // In production, fetch actual IGDB data here
-    const image = getGameImage(mockGame.slug || mockGame.title);
-
-    games.push({
-      id: mockGame.slug || mockGame.title,
-      title: mockGame.title,
-      image: image,
-      rating: getRatingScore(),
-      popularity: getPopularityScore(mockGame.title),
-      price: getRandomPrice(),
-      igdbId: mockGame.igdbId,
-      slug: mockGame.slug,
-    });
-  }
-
-  return games;
+  // Simulate a small delay to feel like real data fetching
+  await new Promise((resolve) => setTimeout(resolve, 300));
+  return randomizeGameData([...gameDatabase]);
 }
 
 // Function to search games
-export async function searchGames(query: string, allGames: Game[]): Promise<Game[]> {
+export async function searchGames(
+  query: string,
+  allGames: Game[]
+): Promise<Game[]> {
   const lowerQuery = query.toLowerCase();
   return allGames.filter(
     (game) =>
