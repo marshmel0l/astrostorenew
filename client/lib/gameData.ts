@@ -10,7 +10,7 @@ export interface Game {
 }
 
 // Game data with preloaded images - no external API calls
-const gameDatabase: Game[] = [
+export const gameDatabase: Game[] = [
   {
     id: "elden-ring",
     title: "Elden Ring",
