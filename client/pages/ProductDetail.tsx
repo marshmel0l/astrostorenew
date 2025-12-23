@@ -1,3 +1,5 @@
+import { supabase } from "@/lib/supabase";
+import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import {
@@ -9,11 +11,14 @@ import {
   Send,
 } from "lucide-react";
 import { useCart } from "@/lib/CartContext";
-import { useReviews } from "@/lib/ReviewContext";
 import { useState } from "react";
 import { gameDatabase } from "@/lib/gameData";
 
 export default function ProductDetail() {
+  const [reviews, setReviews] = useState<any[]>([]);
+  const [rating, setRating] = useState(5);
+  const [comment, setComment] = useState("");
+  const [user, setUser] = useState<any>(null);
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { addToCart } = useCart();
@@ -22,8 +27,50 @@ export default function ProductDetail() {
   const [activeTab, setActiveTab] = useState<
     "description" | "information" | "reviews"
   >("description");
+  async function submitReview() {
+    if (!user) {
+      alert("Please log in to write a review");
+      return;
+    }
+
+    if (!comment.trim()) return;
+
+    await supabase.from("reviews").insert({
+      product_id: game.id,
+      rating,
+      comment,
+    });
+
+    setComment("");
+
+    const { data } = await supabase
+      .from("reviews")
+      .select("*")
+      .eq("product_id", game.id)
+      .order("created_at", { ascending: false });
+
+    setReviews(data || []);
+  }
 
   const game = gameDatabase.find((g) => g.id === id);
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      setUser(data.user);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!game) return;
+
+    supabase
+      .from("reviews")
+      .select("*")
+      .eq("product_id", game.id)
+      .order("created_at", { ascending: false })
+      .then(({ data }) => {
+        setReviews(data || []);
+      });
+  }, [game]);
 
   if (!game) {
     return (
@@ -287,58 +334,97 @@ export default function ProductDetail() {
               </div>
             )}
 
-            {activeTab === "reviews" && (
-              <div className="space-y-6">
-                <h2 className="text-2xl font-bold text-slate-100">
-                  Customer Reviews
-                </h2>
+           {activeTab === "reviews" && (
+  <div className="space-y-6">
+    <h2 className="text-2xl font-bold text-slate-100">
+      Customer Reviews
+    </h2>
 
-                {/* Individual Reviews */}
-                {[
-                  {
-                    name: "Alex Johnson",
-                    rating: 5,
-                    date: "2024-01-15",
-                    text: "Absolutely amazing game! The graphics are stunning and the gameplay is incredibly engaging. Worth every penny!",
-                  },
-                  {
-                    name: "Sarah Smith",
-                    rating: 5,
-                    date: "2024-01-10",
-                    text: "Best purchase I've made in a long time. The story is compelling and keeps you hooked from start to finish.",
-                  },
-                  {
-                    name: "Mike Chen",
-                    rating: 4,
-                    date: "2024-01-05",
-                    text: "Great game overall. Some minor bugs but nothing game-breaking. Highly recommended for all types of players.",
-                  },
-                ].map((review, idx) => (
-                  <div
-                    key={idx}
-                    className="rounded-lg border border-slate-700 bg-slate-800/30 p-4"
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <div>
-                        <p className="font-semibold text-slate-100">
-                          {review.name}
-                        </p>
-                        <p className="text-xs text-slate-500">{review.date}</p>
-                      </div>
-                      <div className="flex gap-1">
-                        {[...Array(review.rating)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className="h-4 w-4 fill-yellow-400 text-yellow-400"
-                          />
-                        ))}
-                      </div>
-                    </div>
-                    <p className="text-slate-300">{review.text}</p>
-                  </div>
-                ))}
-              </div>
-            )}
+    {/* No reviews */}
+    {reviews.length === 0 && (
+      <p className="text-slate-400">
+        No reviews yet. Be the first to review this product.
+      </p>
+    )}
+
+    {/* Reviews list */}
+    {reviews.map((review) => (
+      <div
+        key={review.id}
+        className="rounded-lg border border-slate-700 bg-slate-800/30 p-4"
+      >
+        <div className="flex items-center justify-between mb-2">
+          <div>
+            <p className="font-semibold text-slate-100">
+              Verified Customer
+            </p>
+            <p className="text-xs text-slate-500">
+              {new Date(review.created_at).toLocaleDateString()}
+            </p>
+          </div>
+
+          <div className="flex gap-1">
+            {[...Array(review.rating)].map((_, i) => (
+              <Star
+                key={i}
+                className="h-4 w-4 fill-yellow-400 text-yellow-400"
+              />
+            ))}
+          </div>
+        </div>
+
+        <p className="text-slate-300">{review.comment}</p>
+      </div>
+    ))}
+
+    {/* Write a review (only for logged-in users) */}
+    {user && (
+      <div className="rounded-lg border border-slate-700 bg-slate-800/30 p-4">
+        <h3 className="text-lg font-semibold text-slate-100 mb-3">
+          Write a review
+        </h3>
+
+        {/* Rating */}
+        <select
+          value={rating}
+          onChange={(e) => setRating(Number(e.target.value))}
+          className="mb-3 w-full rounded bg-slate-900 border border-slate-600 text-slate-100 p-2"
+        >
+          {[5, 4, 3, 2, 1].map((n) => (
+            <option key={n} value={n}>
+              {n} Stars
+            </option>
+          ))}
+        </select>
+
+        {/* Comment */}
+        <textarea
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+          className="w-full rounded bg-slate-900 border border-slate-600 text-slate-100 p-2 mb-3"
+          placeholder="Write your review..."
+          rows={4}
+        />
+
+        {/* Submit */}
+        <button
+          onClick={submitReview}
+          className="flex items-center gap-2 rounded bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 text-white hover:shadow-lg transition-shadow"
+        >
+          <Send className="h-4 w-4" />
+          Submit Review
+        </button>
+      </div>
+    )}
+
+    {/* Logged out message */}
+    {!user && (
+      <p className="text-slate-400 text-sm">
+        Please log in to write a review.
+      </p>
+    )}
+  </div>
+)}
           </div>
         </div>
       </div>
