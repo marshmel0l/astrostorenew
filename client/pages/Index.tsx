@@ -51,11 +51,11 @@ export default function Index() {
   }, [games, searchQuery, sortBy, selectedPopularity]);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-slate-950">
       <Header />
 
       {/* Hero Section */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 px-4 py-16 sm:px-6 lg:px-8">
+      <div className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-purple-950/40 to-slate-950 px-4 py-16 sm:px-6 lg:px-8">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-purple-600/20 blur-3xl animate-pulse"></div>
           <div className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-pink-600/20 blur-3xl animate-pulse" style={{ animationDelay: "1s" }}></div>
