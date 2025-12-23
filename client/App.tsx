@@ -13,6 +13,10 @@ import NotFound from "./pages/NotFound";
 import { CartProvider } from "@/lib/CartContext";
 import Login from "@/pages/Login";
 import Account from "@/pages/Account"; // we’ll add next
+import Account from "@/pages/Account";
+import AccountProducts from "@/pages/account/Products";
+import AccountOrders from "@/pages/account/Orders";
+import AccountReviews from "@/pages/account/Reviews";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +28,11 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <Routes>
+              <Route path="/account" element={<Account />}>
+  <Route index element={<AccountProducts />} />
+  <Route path="products" element={<AccountProducts />} />
+  <Route path="orders" element={<AccountOrders />} />
+  <Route path="reviews" element={<AccountReviews />} />
               <Route path="/login" element={<Login />} />
 <Route path="/account" element={<Account />} />
               <Route path="/" element={<Index />} />
