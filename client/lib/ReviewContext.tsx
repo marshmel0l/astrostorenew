@@ -1,88 +1,62 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import { useEffect, useState } from 'react'
+import { getReviews, addReview } from '../lib/reviews'
+import { getUser } from '../lib/auth'
 
-export interface Review {
-  id: string;
-  gameId: string;
-  name: string;
-  rating: number;
-  text: string;
-  date: string;
-  timestamp: number;
-}
+export default function Reviews({ productId }) {
+  const [reviews, setReviews] = useState([])
+  const [comment, setComment] = useState('')
+  const [rating, setRating] = useState(5)
+  const [user, setUser] = useState(null)
 
-interface ReviewContextType {
-  reviews: Review[];
-  addReview: (
-    gameId: string,
-    name: string,
-    rating: number,
-    text: string,
-  ) => void;
-  getGameReviews: (gameId: string) => Review[];
-}
-
-const ReviewContext = createContext<ReviewContextType | undefined>(undefined);
-
-const STORAGE_KEY = "astro_store_reviews";
-
-export function ReviewProvider({ children }: { children: React.ReactNode }) {
-  const [reviews, setReviews] = useState<Review[]>(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      return stored ? JSON.parse(stored) : [];
-    } catch {
-      return [];
-    }
-  });
-
-  // Save to localStorage whenever reviews change
   useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(reviews));
-    } catch (error) {
-      console.error("Failed to save reviews:", error);
+    loadReviews()
+    getUser().then(setUser)
+  }, [])
+
+  async function loadReviews() {
+    const { data } = await getReviews(productId)
+    setReviews(data || [])
+  }
+
+  async function submitReview() {
+    if (!user) {
+      alert('Please login to write a review')
+      return
     }
-  }, [reviews]);
 
-  const addReview = (
-    gameId: string,
-    name: string,
-    rating: number,
-    text: string,
-  ) => {
-    const newReview: Review = {
-      id: `${Date.now()}-${Math.random()}`,
-      gameId,
-      name,
-      rating,
-      text,
-      date: new Date().toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      }),
-      timestamp: Date.now(),
-    };
-    setReviews((prev) => [newReview, ...prev]);
-  };
-
-  const getGameReviews = (gameId: string) => {
-    return reviews
-      .filter((review) => review.gameId === gameId)
-      .sort((a, b) => b.timestamp - a.timestamp);
-  };
+    await addReview(productId, rating, comment)
+    setComment('')
+    loadReviews()
+  }
 
   return (
-    <ReviewContext.Provider value={{ reviews, addReview, getGameReviews }}>
-      {children}
-    </ReviewContext.Provider>
-  );
-}
+    <div className="reviews">
+      <h3>Customer Reviews</h3>
 
-export function useReviews() {
-  const context = useContext(ReviewContext);
-  if (!context) {
-    throw new Error("useReviews must be used within ReviewProvider");
-  }
-  return context;
+      {reviews.map(r => (
+        <div key={r.id}>
+          ⭐ {r.rating}/5
+          <p>{r.comment}</p>
+        </div>
+      ))}
+
+      {user && (
+        <div>
+          <h4>Write a review</h4>
+          <select onChange={e => setRating(e.target.value)}>
+            {[5,4,3,2,1].map(n => (
+              <option key={n}>{n}</option>
+            ))}
+          </select>
+
+          <textarea
+            value={comment}
+            onChange={e => setComment(e.target.value)}
+          />
+
+          <button onClick={submitReview}>Submit</button>
+        </div>
+      )}
+    </div>
+  )
 }
