@@ -7,7 +7,7 @@ export default function Header() {
   const cartCount = getTotalItems();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-slate-700 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-slate-800 bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 backdrop-blur-md">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between py-4">
           <Link
