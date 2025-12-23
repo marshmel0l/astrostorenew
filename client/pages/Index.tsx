@@ -166,87 +166,93 @@ export default function Index() {
         {isLoading ? (
           <div className="flex justify-center py-16">
             <div className="flex flex-col items-center gap-4">
-              <div className="h-12 w-12 animate-spin rounded-full border-4 border-slate-200 border-t-blue-600"></div>
-              <p className="text-slate-600">Loading games...</p>
+              <div className="h-12 w-12 animate-spin rounded-full border-4 border-slate-700 border-t-purple-500"></div>
+              <p className="text-slate-400">Loading games...</p>
             </div>
           </div>
         ) : filteredGames.length === 0 ? (
-          <div className="flex justify-center py-16">
+          <div className="flex justify-center py-16 animate-fade-in">
             <div className="text-center">
-              <p className="text-lg font-medium text-slate-900">
+              <p className="text-lg font-medium text-slate-100">
                 No games found
               </p>
-              <p className="mt-2 text-slate-600">
+              <p className="mt-2 text-slate-400">
                 Try adjusting your filters or search query
               </p>
             </div>
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {filteredGames.map((game) => (
-              <GameCard
+            {filteredGames.map((game, index) => (
+              <div
                 key={game.id}
-                id={game.id}
-                title={game.title}
-                image={game.image}
-                price={game.price}
-                rating={game.rating}
-                popularity={game.popularity}
-              />
+                style={{
+                  animation: `fadeIn 0.5s ease-out ${index * 50}ms both`,
+                }}
+              >
+                <GameCard
+                  id={game.id}
+                  title={game.title}
+                  image={game.image}
+                  price={game.price}
+                  rating={game.rating}
+                  popularity={game.popularity}
+                />
+              </div>
             ))}
           </div>
         )}
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-slate-200 bg-slate-50 px-4 py-12 sm:px-6 lg:px-8">
+      <footer className="border-t border-slate-700 bg-gradient-to-b from-slate-900 to-slate-900/50 px-4 py-12 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
             <div>
-              <h3 className="font-semibold text-slate-900">About</h3>
-              <p className="mt-2 text-sm text-slate-600">
+              <h3 className="font-semibold text-slate-100">About Astro Store</h3>
+              <p className="mt-2 text-sm text-slate-400">
                 Your ultimate destination for discovering and purchasing amazing
-                games at unbeatable prices.
+                games at unbeatable prices with shared accounts and offline mode.
               </p>
             </div>
             <div>
-              <h3 className="font-semibold text-slate-900">Quick Links</h3>
-              <ul className="mt-2 space-y-1 text-sm text-slate-600">
+              <h3 className="font-semibold text-slate-100">Quick Links</h3>
+              <ul className="mt-2 space-y-1 text-sm text-slate-400">
                 <li>
-                  <a href="#" className="hover:text-slate-900">
+                  <a href="#" className="hover:text-purple-400 transition-colors">
                     Home
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-slate-900">
+                  <a href="#" className="hover:text-purple-400 transition-colors">
                     Games
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-slate-900">
+                  <a href="#" className="hover:text-purple-400 transition-colors">
                     Contact
                   </a>
                 </li>
               </ul>
             </div>
             <div>
-              <h3 className="font-semibold text-slate-900">Legal</h3>
-              <ul className="mt-2 space-y-1 text-sm text-slate-600">
+              <h3 className="font-semibold text-slate-100">Legal</h3>
+              <ul className="mt-2 space-y-1 text-sm text-slate-400">
                 <li>
-                  <a href="#" className="hover:text-slate-900">
+                  <a href="#" className="hover:text-purple-400 transition-colors">
                     Terms of Service
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-slate-900">
+                  <a href="#" className="hover:text-purple-400 transition-colors">
                     Privacy Policy
                   </a>
                 </li>
               </ul>
             </div>
           </div>
-          <div className="mt-8 border-t border-slate-200 pt-8 text-center text-sm text-slate-600">
-            <p>&copy; 2024 GameHub. All rights reserved.</p>
+          <div className="mt-8 border-t border-slate-700 pt-8 text-center text-sm text-slate-500">
+            <p>&copy; 2024 Astro Store. All rights reserved.</p>
           </div>
         </div>
       </footer>
