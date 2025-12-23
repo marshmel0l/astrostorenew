@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ShoppingCart, Search, Rocket } from "lucide-react";
+import { ShoppingCart, Rocket } from "lucide-react";
 import { useCart } from "@/lib/CartContext";
 
 export default function Header() {
