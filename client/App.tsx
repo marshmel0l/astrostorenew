@@ -11,6 +11,8 @@ import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
 import NotFound from "./pages/NotFound";
 import { CartProvider } from "@/lib/CartContext";
+import Login from "@/pages/Login";
+import Account from "@/pages/Account"; // we’ll add next
 
 const queryClient = new QueryClient();
 
@@ -22,6 +24,8 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <Routes>
+              <Route path="/login" element={<Login />} />
+<Route path="/account" element={<Account />} />
               <Route path="/" element={<Index />} />
               <Route path="/product/:id" element={<ProductDetail />} />
               <Route path="/cart" element={<Cart />} />
