@@ -113,19 +113,6 @@ export default function Index() {
               </select>
             </div>
 
-            {/* Search */}
-            <div className="flex items-center gap-2">
-              <label className="text-sm font-medium text-slate-300">
-                Search:
-              </label>
-              <input
-                type="text"
-                placeholder="Find a game..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-slate-100 placeholder-slate-500 transition-colors hover:border-slate-600 focus:border-purple-500 focus:outline-none"
-              />
-            </div>
           </div>
 
           {/* Sort */}
