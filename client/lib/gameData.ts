@@ -163,10 +163,10 @@ export async function fetchGames(): Promise<Game[]> {
 }
 
 // Function to search games
-export async function searchGames(
+export function searchGames(
   query: string,
   allGames: Game[]
-): Promise<Game[]> {
+): Game[] {
   const lowerQuery = query.toLowerCase();
   return allGames.filter(
     (game) =>
