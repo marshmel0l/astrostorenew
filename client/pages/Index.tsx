@@ -93,19 +93,19 @@ export default function Index() {
       </div>
 
       {/* Main Content */}
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <div id="games-section" className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         {/* Filters and Sorting */}
-        <div className="mb-8 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mb-8 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between animate-fade-in">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
             {/* Popularity Filter */}
             <div className="flex items-center gap-2">
-              <label className="text-sm font-medium text-slate-700">
+              <label className="text-sm font-medium text-slate-300">
                 Filter:
               </label>
               <select
                 value={selectedPopularity}
                 onChange={(e) => setSelectedPopularity(e.target.value)}
-                className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 transition-colors hover:border-slate-400 focus:border-blue-500 focus:outline-none"
+                className="rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-slate-100 transition-colors hover:border-slate-600 focus:border-purple-500 focus:outline-none"
               >
                 <option value="all">All Games</option>
                 <option value="trending">Trending</option>
@@ -115,7 +115,7 @@ export default function Index() {
 
             {/* Search */}
             <div className="flex items-center gap-2">
-              <label className="text-sm font-medium text-slate-700">
+              <label className="text-sm font-medium text-slate-300">
                 Search:
               </label>
               <input
@@ -123,14 +123,14 @@ export default function Index() {
                 placeholder="Find a game..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder-slate-500 transition-colors hover:border-slate-400 focus:border-blue-500 focus:outline-none"
+                className="rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-slate-100 placeholder-slate-500 transition-colors hover:border-slate-600 focus:border-purple-500 focus:outline-none"
               />
             </div>
           </div>
 
           {/* Sort */}
           <div className="flex items-center gap-2">
-            <label className="text-sm font-medium text-slate-700">
+            <label className="text-sm font-medium text-slate-300">
               Sort by:
             </label>
             <div className="relative">
@@ -145,7 +145,7 @@ export default function Index() {
                       | "popularity"
                   )
                 }
-                className="appearance-none rounded-lg border border-slate-300 bg-white px-3 py-2 pr-8 text-sm text-slate-900 transition-colors hover:border-slate-400 focus:border-blue-500 focus:outline-none"
+                className="appearance-none rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 pr-8 text-sm text-slate-100 transition-colors hover:border-slate-600 focus:border-purple-500 focus:outline-none"
               >
                 <option value="popularity">Popularity</option>
                 <option value="rating">Highest Rated</option>
@@ -158,7 +158,7 @@ export default function Index() {
         </div>
 
         {/* Results Counter */}
-        <div className="mb-6 text-sm text-slate-600">
+        <div className="mb-6 text-sm text-slate-400 animate-fade-in">
           Showing {filteredGames.length} of {games.length} games
         </div>
 
