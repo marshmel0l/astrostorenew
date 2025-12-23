@@ -1,45 +1,79 @@
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import Header from "@/components/Header";
 import { supabase } from "@/lib/supabase";
-import { useEffect, useState } from "react";
-import { gameDatabase } from "@/lib/gameData";
 
 export default function Account() {
-  const [products, setProducts] = useState<any[]>([]);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    supabase
-      .from("user_products")
-      .select("product_id")
-      .then(({ data }) => {
-        if (!data) return;
-
-        const owned = gameDatabase.filter((g) =>
-          data.some((p) => p.product_id === g.id)
-        );
-
-        setProducts(owned);
-      });
-  }, []);
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate("/");
+  };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 p-8">
-      <h1 className="text-2xl font-bold mb-4">My Games</h1>
+    <div className="min-h-screen bg-slate-950 text-slate-100">
+      <Header />
 
-      {products.length === 0 && (
-        <p className="text-slate-400">
-          You don’t own any products yet.
-        </p>
-      )}
+      <div className="mx-auto max-w-7xl px-4 py-10 flex gap-8">
+        {/* Sidebar */}
+        <aside className="w-64 rounded-xl border border-slate-800 bg-slate-900 p-4 h-fit">
+          <h2 className="mb-4 text-lg font-bold text-purple-400">
+            My Account
+          </h2>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {products.map((g) => (
-          <div
-            key={g.id}
-            className="rounded bg-slate-800 p-3"
-          >
-            <img src={g.image} className="rounded mb-2" />
-            <p className="font-semibold">{g.title}</p>
-          </div>
-        ))}
+          <nav className="flex flex-col gap-2">
+            <NavLink
+              to="products"
+              className={({ isActive }) =>
+                `rounded-lg px-3 py-2 text-sm transition ${
+                  isActive
+                    ? "bg-purple-600 text-white"
+                    : "text-slate-400 hover:bg-slate-800"
+                }`
+              }
+            >
+              My Products
+            </NavLink>
+
+            <NavLink
+              to="orders"
+              className={({ isActive }) =>
+                `rounded-lg px-3 py-2 text-sm transition ${
+                  isActive
+                    ? "bg-purple-600 text-white"
+                    : "text-slate-400 hover:bg-slate-800"
+                }`
+              }
+            >
+              Orders
+            </NavLink>
+
+            <NavLink
+              to="reviews"
+              className={({ isActive }) =>
+                `rounded-lg px-3 py-2 text-sm transition ${
+                  isActive
+                    ? "bg-purple-600 text-white"
+                    : "text-slate-400 hover:bg-slate-800"
+                }`
+              }
+            >
+              Reviews
+            </NavLink>
+
+            <button
+              onClick={handleLogout}
+              className="mt-4 rounded-lg px-3 py-2 text-sm text-red-400 hover:bg-red-500/10"
+            >
+              Logout
+            </button>
+          </nav>
+        </aside>
+
+        {/* Main content */}
+        <main className="flex-1 rounded-xl border border-slate-800 bg-slate-900 p-6">
+          <Outlet />
+        </main>
       </div>
     </div>
   );
