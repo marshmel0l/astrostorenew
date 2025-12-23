@@ -192,7 +192,7 @@ export default function Index() {
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-slate-700 bg-gradient-to-b from-slate-900 to-slate-900/50 px-4 py-12 sm:px-6 lg:px-8">
+      <footer className="border-t border-slate-800 bg-gradient-to-b from-slate-950 to-slate-950 px-4 py-12 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
             <div>
