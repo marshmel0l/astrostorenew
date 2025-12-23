@@ -11,13 +11,11 @@ import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
 import NotFound from "./pages/NotFound";
 import { CartProvider } from "@/lib/CartContext";
-import { ReviewProvider } from "@/lib/ReviewContext";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <ReviewProvider>
       <TooltipProvider>
         <CartProvider>
           <Toaster />
@@ -33,7 +31,6 @@ const App = () => (
           </BrowserRouter>
         </CartProvider>
       </TooltipProvider>
-    </ReviewProvider>
   </QueryClientProvider>
 );
 
