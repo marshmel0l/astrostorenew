@@ -41,27 +41,39 @@ const NotFound = () => {
         <div className="mx-auto max-w-7xl">
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
             <div>
-              <h3 className="font-semibold text-slate-100">About Astro Store</h3>
+              <h3 className="font-semibold text-slate-100">
+                About Astro Store
+              </h3>
               <p className="mt-2 text-sm text-slate-400">
                 Your ultimate destination for discovering and purchasing amazing
-                games at unbeatable prices with shared accounts and offline mode.
+                games at unbeatable prices with shared accounts and offline
+                mode.
               </p>
             </div>
             <div>
               <h3 className="font-semibold text-slate-100">Quick Links</h3>
               <ul className="mt-2 space-y-1 text-sm text-slate-400">
                 <li>
-                  <a href="#" className="hover:text-purple-400 transition-colors">
+                  <a
+                    href="#"
+                    className="hover:text-purple-400 transition-colors"
+                  >
                     Home
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-purple-400 transition-colors">
+                  <a
+                    href="#"
+                    className="hover:text-purple-400 transition-colors"
+                  >
                     Games
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-purple-400 transition-colors">
+                  <a
+                    href="#"
+                    className="hover:text-purple-400 transition-colors"
+                  >
                     Contact
                   </a>
                 </li>
@@ -71,12 +83,18 @@ const NotFound = () => {
               <h3 className="font-semibold text-slate-100">Legal</h3>
               <ul className="mt-2 space-y-1 text-sm text-slate-400">
                 <li>
-                  <a href="#" className="hover:text-purple-400 transition-colors">
+                  <a
+                    href="#"
+                    className="hover:text-purple-400 transition-colors"
+                  >
                     Terms of Service
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-purple-400 transition-colors">
+                  <a
+                    href="#"
+                    className="hover:text-purple-400 transition-colors"
+                  >
                     Privacy Policy
                   </a>
                 </li>

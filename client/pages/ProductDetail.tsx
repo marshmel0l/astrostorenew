@@ -1,6 +1,13 @@
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
-import { ShoppingCart, Star, ChevronLeft, Share2, Heart, Send } from "lucide-react";
+import {
+  ShoppingCart,
+  Star,
+  ChevronLeft,
+  Share2,
+  Heart,
+  Send,
+} from "lucide-react";
 import { useCart } from "@/lib/CartContext";
 import { useReviews } from "@/lib/ReviewContext";
 import { useState } from "react";
@@ -12,7 +19,9 @@ export default function ProductDetail() {
   const { addToCart } = useCart();
   const [isAdded, setIsAdded] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
-  const [activeTab, setActiveTab] = useState<"description" | "information" | "reviews">("description");
+  const [activeTab, setActiveTab] = useState<
+    "description" | "information" | "reviews"
+  >("description");
 
   const game = gameDatabase.find((g) => g.id === id);
 

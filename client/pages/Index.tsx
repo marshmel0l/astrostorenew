@@ -2,18 +2,15 @@ import { useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import Header from "@/components/Header";
 import GameCard from "@/components/GameCard";
-import {
-  fetchGames,
-  searchGames,
-  sortGames,
-  type Game,
-} from "@/lib/gameData";
+import { fetchGames, searchGames, sortGames, type Game } from "@/lib/gameData";
 
 export default function Index() {
   const [games, setGames] = useState<Game[]>([]);
   const [filteredGames, setFilteredGames] = useState<Game[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortBy, setSortBy] = useState<"price-low" | "price-high" | "rating" | "popularity">("popularity");
+  const [sortBy, setSortBy] = useState<
+    "price-low" | "price-high" | "rating" | "popularity"
+  >("popularity");
   const [isLoading, setIsLoading] = useState(true);
   const [selectedPopularity, setSelectedPopularity] = useState("all");
 
@@ -58,7 +55,10 @@ export default function Index() {
       <div className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-purple-950/40 to-slate-950 px-4 py-16 sm:px-6 lg:px-8">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-purple-600/20 blur-3xl animate-pulse"></div>
-          <div className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-pink-600/20 blur-3xl animate-pulse" style={{ animationDelay: "1s" }}></div>
+          <div
+            className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-pink-600/20 blur-3xl animate-pulse"
+            style={{ animationDelay: "1s" }}
+          ></div>
         </div>
         <div className="mx-auto max-w-7xl relative z-10">
           <div className="animate-slide-in-left">
@@ -72,7 +72,8 @@ export default function Index() {
               Astro Store
             </h1>
             <p className="mt-4 text-lg text-slate-300 max-w-2xl">
-              Discover amazing games at unbeatable prices. Shared accounts with lifetime access and offline mode.
+              Discover amazing games at unbeatable prices. Shared accounts with
+              lifetime access and offline mode.
             </p>
             <div className="mt-6 flex gap-4">
               <button
@@ -93,7 +94,10 @@ export default function Index() {
       </div>
 
       {/* Main Content */}
-      <div id="games-section" className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <div
+        id="games-section"
+        className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8"
+      >
         {/* Filters and Sorting */}
         <div className="mb-8 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between animate-fade-in">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
@@ -112,7 +116,6 @@ export default function Index() {
                 <option value="popular">Popular</option>
               </select>
             </div>
-
           </div>
 
           {/* Sort */}
@@ -129,7 +132,7 @@ export default function Index() {
                       | "price-low"
                       | "price-high"
                       | "rating"
-                      | "popularity"
+                      | "popularity",
                   )
                 }
                 className="appearance-none rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 pr-8 text-sm text-slate-100 transition-colors hover:border-slate-600 focus:border-purple-500 focus:outline-none"
@@ -196,27 +199,39 @@ export default function Index() {
         <div className="mx-auto max-w-7xl">
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
             <div>
-              <h3 className="font-semibold text-slate-100">About Astro Store</h3>
+              <h3 className="font-semibold text-slate-100">
+                About Astro Store
+              </h3>
               <p className="mt-2 text-sm text-slate-400">
                 Your ultimate destination for discovering and purchasing amazing
-                games at unbeatable prices with shared accounts and offline mode.
+                games at unbeatable prices with shared accounts and offline
+                mode.
               </p>
             </div>
             <div>
               <h3 className="font-semibold text-slate-100">Quick Links</h3>
               <ul className="mt-2 space-y-1 text-sm text-slate-400">
                 <li>
-                  <a href="#" className="hover:text-purple-400 transition-colors">
+                  <a
+                    href="#"
+                    className="hover:text-purple-400 transition-colors"
+                  >
                     Home
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-purple-400 transition-colors">
+                  <a
+                    href="#"
+                    className="hover:text-purple-400 transition-colors"
+                  >
                     Games
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-purple-400 transition-colors">
+                  <a
+                    href="#"
+                    className="hover:text-purple-400 transition-colors"
+                  >
                     Contact
                   </a>
                 </li>
@@ -226,12 +241,18 @@ export default function Index() {
               <h3 className="font-semibold text-slate-100">Legal</h3>
               <ul className="mt-2 space-y-1 text-sm text-slate-400">
                 <li>
-                  <a href="#" className="hover:text-purple-400 transition-colors">
+                  <a
+                    href="#"
+                    className="hover:text-purple-400 transition-colors"
+                  >
                     Terms of Service
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-purple-400 transition-colors">
+                  <a
+                    href="#"
+                    className="hover:text-purple-400 transition-colors"
+                  >
                     Privacy Policy
                   </a>
                 </li>

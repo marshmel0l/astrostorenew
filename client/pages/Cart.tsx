@@ -1,6 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
-import { ChevronLeft, X, Plus, Minus, MessageCircle, ShoppingBag } from "lucide-react";
+import {
+  ChevronLeft,
+  X,
+  Plus,
+  Minus,
+  MessageCircle,
+  ShoppingBag,
+} from "lucide-react";
 import { useCart } from "@/lib/CartContext";
 
 export default function Cart() {

@@ -147,7 +147,8 @@ export const gameDatabase: Game[] = [
     id: "game-1",
     title: "Phantom Shadows",
     slug: "phantom-shadows",
-    image: "https://images.unsplash.com/photo-1552820728-8ac41f1ce891?w=400&h=600&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1552820728-8ac41f1ce891?w=400&h=600&fit=crop",
     rating: 8.2,
     popularity: 72,
     price: 2.49,
@@ -156,7 +157,8 @@ export const gameDatabase: Game[] = [
     id: "game-2",
     title: "Neon Nights",
     slug: "neon-nights",
-    image: "https://images.unsplash.com/photo-1535869668f74b6f27a876e2e13c3f72c4e2cf0cc?w=400&h=600&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1535869668f74b6f27a876e2e13c3f72c4e2cf0cc?w=400&h=600&fit=crop",
     rating: 7.9,
     popularity: 65,
     price: 1.99,
@@ -165,7 +167,8 @@ export const gameDatabase: Game[] = [
     id: "game-3",
     title: "Void Walker",
     slug: "void-walker",
-    image: "https://images.unsplash.com/photo-1559881243-8f1ce3b1da5f?w=400&h=600&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1559881243-8f1ce3b1da5f?w=400&h=600&fit=crop",
     rating: 8.6,
     popularity: 78,
     price: 2.79,
@@ -174,7 +177,8 @@ export const gameDatabase: Game[] = [
     id: "game-4",
     title: "Crimson Tide",
     slug: "crimson-tide",
-    image: "https://images.unsplash.com/photo-1586182191929-81e3657d2a5d?w=400&h=600&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1586182191929-81e3657d2a5d?w=400&h=600&fit=crop",
     rating: 7.5,
     popularity: 58,
     price: 2.29,
@@ -183,7 +187,8 @@ export const gameDatabase: Game[] = [
     id: "game-5",
     title: "Solar Flare",
     slug: "solar-flare",
-    image: "https://images.unsplash.com/photo-1608889335941-33ac5f4db8a2?w=400&h=600&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1608889335941-33ac5f4db8a2?w=400&h=600&fit=crop",
     rating: 8.1,
     popularity: 71,
     price: 2.49,
@@ -192,7 +197,8 @@ export const gameDatabase: Game[] = [
     id: "game-6",
     title: "Midnight Echo",
     slug: "midnight-echo",
-    image: "https://images.unsplash.com/photo-1591308009145-3e28b25ab84f?w=400&h=600&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1591308009145-3e28b25ab84f?w=400&h=600&fit=crop",
     rating: 8.3,
     popularity: 74,
     price: 2.99,
@@ -201,7 +207,8 @@ export const gameDatabase: Game[] = [
     id: "game-7",
     title: "Frost Kingdom",
     slug: "frost-kingdom",
-    image: "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=400&h=600&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=400&h=600&fit=crop",
     rating: 8.0,
     popularity: 68,
     price: 2.39,
@@ -210,7 +217,8 @@ export const gameDatabase: Game[] = [
     id: "game-8",
     title: "Thunder Blade",
     slug: "thunder-blade",
-    image: "https://images.unsplash.com/photo-1552985118-5ae71aa9186d?w=400&h=600&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1552985118-5ae71aa9186d?w=400&h=600&fit=crop",
     rating: 8.4,
     popularity: 76,
     price: 2.69,
@@ -219,7 +227,8 @@ export const gameDatabase: Game[] = [
     id: "game-9",
     title: "Shadow's Revenge",
     slug: "shadows-revenge",
-    image: "https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?w=400&h=600&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?w=400&h=600&fit=crop",
     rating: 8.2,
     popularity: 73,
     price: 2.59,
@@ -228,7 +237,8 @@ export const gameDatabase: Game[] = [
     id: "game-10",
     title: "Crystal Maze",
     slug: "crystal-maze",
-    image: "https://images.unsplash.com/photo-1549887534-7eb53e928727?w=400&h=600&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1549887534-7eb53e928727?w=400&h=600&fit=crop",
     rating: 7.8,
     popularity: 62,
     price: 2.19,
@@ -237,7 +247,8 @@ export const gameDatabase: Game[] = [
     id: "game-11",
     title: "Inferno Quest",
     slug: "inferno-quest",
-    image: "https://images.unsplash.com/photo-1552972406-5fabdc338d20?w=400&h=600&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1552972406-5fabdc338d20?w=400&h=600&fit=crop",
     rating: 8.5,
     popularity: 79,
     price: 2.89,
@@ -246,7 +257,8 @@ export const gameDatabase: Game[] = [
     id: "game-12",
     title: "Gravity Well",
     slug: "gravity-well",
-    image: "https://images.unsplash.com/photo-1511671782486-a01980e01a18?w=400&h=600&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1511671782486-a01980e01a18?w=400&h=600&fit=crop",
     rating: 8.1,
     popularity: 70,
     price: 2.49,
@@ -255,7 +267,8 @@ export const gameDatabase: Game[] = [
     id: "game-13",
     title: "Eclipse Protocol",
     slug: "eclipse-protocol",
-    image: "https://images.unsplash.com/photo-1596927056931-148839fbbadb?w=400&h=600&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1596927056931-148839fbbadb?w=400&h=600&fit=crop",
     rating: 8.3,
     popularity: 75,
     price: 2.79,
@@ -264,7 +277,8 @@ export const gameDatabase: Game[] = [
     id: "game-14",
     title: "Neon Vortex",
     slug: "neon-vortex",
-    image: "https://images.unsplash.com/photo-1518611505868-48f1352f4ecf?w=400&h=600&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1518611505868-48f1352f4ecf?w=400&h=600&fit=crop",
     rating: 7.9,
     popularity: 64,
     price: 2.09,
@@ -273,7 +287,8 @@ export const gameDatabase: Game[] = [
     id: "game-15",
     title: "Apex Legends Pro",
     slug: "apex-legends-pro",
-    image: "https://images.unsplash.com/photo-1550373143-4c83c5d00f39?w=400&h=600&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1550373143-4c83c5d00f39?w=400&h=600&fit=crop",
     rating: 8.6,
     popularity: 82,
     price: 3.29,
@@ -282,7 +297,8 @@ export const gameDatabase: Game[] = [
     id: "game-16",
     title: "Resonance",
     slug: "resonance",
-    image: "https://images.unsplash.com/photo-1489599849228-ed4dc59b2e9f?w=400&h=600&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1489599849228-ed4dc59b2e9f?w=400&h=600&fit=crop",
     rating: 8.0,
     popularity: 69,
     price: 2.59,
@@ -291,7 +307,8 @@ export const gameDatabase: Game[] = [
     id: "game-17",
     title: "Quantum Leap",
     slug: "quantum-leap",
-    image: "https://images.unsplash.com/photo-1511282753313-52581002a659?w=400&h=600&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1511282753313-52581002a659?w=400&h=600&fit=crop",
     rating: 8.2,
     popularity: 72,
     price: 2.39,
@@ -300,7 +317,8 @@ export const gameDatabase: Game[] = [
     id: "game-18",
     title: "Hexagon Masters",
     slug: "hexagon-masters",
-    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=600&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=600&fit=crop",
     rating: 7.7,
     popularity: 61,
     price: 1.99,
@@ -309,7 +327,8 @@ export const gameDatabase: Game[] = [
     id: "game-19",
     title: "Pulse Dimension",
     slug: "pulse-dimension",
-    image: "https://images.unsplash.com/photo-1556177017-f89e2330b63f?w=400&h=600&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1556177017-f89e2330b63f?w=400&h=600&fit=crop",
     rating: 8.4,
     popularity: 77,
     price: 2.99,
@@ -318,7 +337,8 @@ export const gameDatabase: Game[] = [
     id: "game-20",
     title: "Cyber Ninja",
     slug: "cyber-ninja",
-    image: "https://images.unsplash.com/photo-1578307437869-1a383b9dde62?w=400&h=600&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1578307437869-1a383b9dde62?w=400&h=600&fit=crop",
     rating: 8.1,
     popularity: 71,
     price: 2.49,
@@ -327,7 +347,8 @@ export const gameDatabase: Game[] = [
     id: "game-21",
     title: "Arctic Dawn",
     slug: "arctic-dawn",
-    image: "https://images.unsplash.com/photo-1559163615-cd4628902d4a?w=400&h=600&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1559163615-cd4628902d4a?w=400&h=600&fit=crop",
     rating: 7.8,
     popularity: 63,
     price: 2.29,
@@ -336,7 +357,8 @@ export const gameDatabase: Game[] = [
     id: "game-22",
     title: "Obsidian Core",
     slug: "obsidian-core",
-    image: "https://images.unsplash.com/photo-1531746790731-6c087fecd65b?w=400&h=600&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1531746790731-6c087fecd65b?w=400&h=600&fit=crop",
     rating: 8.5,
     popularity: 80,
     price: 2.89,
@@ -345,7 +367,8 @@ export const gameDatabase: Game[] = [
     id: "game-23",
     title: "Stellar Wars",
     slug: "stellar-wars",
-    image: "https://images.unsplash.com/photo-1552862750-746b8f6f7f25?w=400&h=600&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1552862750-746b8f6f7f25?w=400&h=600&fit=crop",
     rating: 8.3,
     popularity: 76,
     price: 3.09,
@@ -354,7 +377,8 @@ export const gameDatabase: Game[] = [
     id: "game-24",
     title: "Vortex Runner",
     slug: "vortex-runner",
-    image: "https://images.unsplash.com/photo-1538481143235-f2fcccb439ab?w=400&h=600&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1538481143235-f2fcccb439ab?w=400&h=600&fit=crop",
     rating: 8.0,
     popularity: 68,
     price: 2.19,
@@ -363,7 +387,8 @@ export const gameDatabase: Game[] = [
     id: "game-25",
     title: "Carbon Edge",
     slug: "carbon-edge",
-    image: "https://images.unsplash.com/photo-1570303008900-a1968b7aef4f?w=400&h=600&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1570303008900-a1968b7aef4f?w=400&h=600&fit=crop",
     rating: 8.2,
     popularity: 74,
     price: 2.69,
@@ -372,7 +397,8 @@ export const gameDatabase: Game[] = [
     id: "game-26",
     title: "Infinity Bound",
     slug: "infinity-bound",
-    image: "https://images.unsplash.com/photo-1579373903014-b726fb6cb885?w=400&h=600&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1579373903014-b726fb6cb885?w=400&h=600&fit=crop",
     rating: 7.9,
     popularity: 65,
     price: 2.49,
@@ -381,7 +407,8 @@ export const gameDatabase: Game[] = [
     id: "game-27",
     title: "Pixel Prophecy",
     slug: "pixel-prophecy",
-    image: "https://images.unsplash.com/photo-1471879832106-c7ab9019e8de?w=400&h=600&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1471879832106-c7ab9019e8de?w=400&h=600&fit=crop",
     rating: 8.1,
     popularity: 70,
     price: 1.89,
@@ -390,7 +417,8 @@ export const gameDatabase: Game[] = [
     id: "game-28",
     title: "Cipher Wars",
     slug: "cipher-wars",
-    image: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=600&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=600&fit=crop",
     rating: 8.4,
     popularity: 78,
     price: 2.79,
@@ -399,7 +427,8 @@ export const gameDatabase: Game[] = [
     id: "game-29",
     title: "Luminous Path",
     slug: "luminous-path",
-    image: "https://images.unsplash.com/photo-1580959375944-abd7e991f971?w=400&h=600&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1580959375944-abd7e991f971?w=400&h=600&fit=crop",
     rating: 8.3,
     popularity: 75,
     price: 2.59,
@@ -408,7 +437,8 @@ export const gameDatabase: Game[] = [
     id: "game-30",
     title: "Apex Runner",
     slug: "apex-runner",
-    image: "https://images.unsplash.com/photo-1538481143235-f2fcccb439ab?w=400&h=600&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1538481143235-f2fcccb439ab?w=400&h=600&fit=crop",
     rating: 8.2,
     popularity: 73,
     price: 2.39,
@@ -433,22 +463,19 @@ export async function fetchGames(): Promise<Game[]> {
 }
 
 // Function to search games
-export function searchGames(
-  query: string,
-  allGames: Game[]
-): Game[] {
+export function searchGames(query: string, allGames: Game[]): Game[] {
   const lowerQuery = query.toLowerCase();
   return allGames.filter(
     (game) =>
       game.title.toLowerCase().includes(lowerQuery) ||
-      game.slug?.toLowerCase().includes(lowerQuery)
+      game.slug?.toLowerCase().includes(lowerQuery),
   );
 }
 
 // Function to filter games by popularity
 export function filterByPopularity(
   games: Game[],
-  minPopularity: number
+  minPopularity: number,
 ): Game[] {
   return games.filter((game) => game.popularity >= minPopularity);
 }
@@ -456,7 +483,7 @@ export function filterByPopularity(
 // Function to sort games
 export function sortGames(
   games: Game[],
-  sortBy: "price-low" | "price-high" | "rating" | "popularity"
+  sortBy: "price-low" | "price-high" | "rating" | "popularity",
 ): Game[] {
   const sorted = [...games];
   switch (sortBy) {

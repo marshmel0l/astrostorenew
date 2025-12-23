@@ -27,7 +27,6 @@ export default function Header() {
             </div>
           </Link>
 
-
           <Link
             to="/cart"
             className="relative p-2 group hover:opacity-80 transition-opacity"

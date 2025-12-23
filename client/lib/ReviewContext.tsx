@@ -12,7 +12,12 @@ export interface Review {
 
 interface ReviewContextType {
   reviews: Review[];
-  addReview: (gameId: string, name: string, rating: number, text: string) => void;
+  addReview: (
+    gameId: string,
+    name: string,
+    rating: number,
+    text: string,
+  ) => void;
   getGameReviews: (gameId: string) => Review[];
 }
 
@@ -39,7 +44,12 @@ export function ReviewProvider({ children }: { children: React.ReactNode }) {
     }
   }, [reviews]);
 
-  const addReview = (gameId: string, name: string, rating: number, text: string) => {
+  const addReview = (
+    gameId: string,
+    name: string,
+    rating: number,
+    text: string,
+  ) => {
     const newReview: Review = {
       id: `${Date.now()}-${Math.random()}`,
       gameId,
