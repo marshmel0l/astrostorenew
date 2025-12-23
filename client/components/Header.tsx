@@ -1,10 +1,31 @@
 import { Link } from "react-router-dom";
 import { ShoppingCart, Rocket } from "lucide-react";
 import { useCart } from "@/lib/CartContext";
+import { User } from "lucide-react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   const { getTotalItems } = useCart();
   const cartCount = getTotalItems();
+const [user, setUser] = useState<any>(null);
+
+useEffect(() => {
+  supabase.auth.getUser().then(({ data }) => {
+    setUser(data.user);
+  });
+
+  const { data: listener } = supabase.auth.onAuthStateChange(
+    (_event, session) => {
+      setUser(session?.user ?? null);
+    }
+  );
+
+  return () => {
+    listener.subscription.unsubscribe();
+  };
+}, []);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-800 bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 backdrop-blur-md">
@@ -26,6 +47,13 @@ export default function Header() {
               </span>
             </div>
           </Link>
+<Link
+  to={user ? "/account" : "/login"}
+  className="flex items-center gap-2 rounded-lg border border-slate-600 px-3 py-2 text-slate-200 hover:bg-slate-800 transition"
+>
+  <User className="h-5 w-5" />
+  {user ? "Account" : "Login"}
+</Link>
 
           <Link
             to="/cart"
