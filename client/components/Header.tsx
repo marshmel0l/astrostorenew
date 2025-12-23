@@ -27,16 +27,6 @@ export default function Header() {
             </div>
           </Link>
 
-          <div className="flex flex-1 justify-center px-8 max-w-md">
-            <div className="relative w-full">
-              <input
-                type="text"
-                placeholder="Search games..."
-                className="w-full rounded-lg border border-slate-600 bg-slate-800/50 py-2 pl-10 pr-4 text-sm placeholder-slate-400 text-slate-100 transition-colors hover:border-slate-500 focus:border-purple-500 focus:bg-slate-800 focus:outline-none"
-              />
-              <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
-            </div>
-          </div>
 
           <Link
             to="/cart"
