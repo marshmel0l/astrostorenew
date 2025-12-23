@@ -55,15 +55,39 @@ export default function Index() {
       <Header />
 
       {/* Hero Section */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="relative z-10">
-            <h1 className="text-4xl font-bold text-white sm:text-5xl lg:text-6xl">
-              Game Hub
+      <div className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 px-4 py-16 sm:px-6 lg:px-8">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-purple-600/20 blur-3xl animate-pulse"></div>
+          <div className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-pink-600/20 blur-3xl animate-pulse" style={{ animationDelay: "1s" }}></div>
+        </div>
+        <div className="mx-auto max-w-7xl relative z-10">
+          <div className="animate-slide-in-left">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="h-1 w-12 bg-gradient-to-r from-purple-500 to-pink-500"></div>
+              <span className="text-purple-300 font-semibold text-sm uppercase tracking-widest">
+                Welcome to Astro Store
+              </span>
+            </div>
+            <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-pink-300 to-purple-300 sm:text-5xl lg:text-6xl">
+              Astro Store
             </h1>
-            <p className="mt-4 text-lg text-blue-100">
-              Discover amazing games at unbeatable prices
+            <p className="mt-4 text-lg text-slate-300 max-w-2xl">
+              Discover amazing games at unbeatable prices. Shared accounts with lifetime access and offline mode.
             </p>
+            <div className="mt-6 flex gap-4">
+              <button
+                onClick={() => {
+                  const element = document.getElementById("games-section");
+                  element?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 text-white font-semibold hover:shadow-lg hover:shadow-purple-600/50 transition-all transform hover:scale-105 active:scale-95"
+              >
+                Shop Now
+              </button>
+              <button className="rounded-lg border border-slate-700 px-6 py-3 text-slate-300 font-semibold hover:border-purple-500 hover:text-purple-300 transition-colors">
+                Learn More
+              </button>
+            </div>
           </div>
         </div>
       </div>
