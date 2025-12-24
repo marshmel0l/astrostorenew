@@ -1,23 +1,23 @@
 import { Link } from "react-router-dom";
 import { useWishlist } from "@/lib/WishlistContext";
-import { Heart, Trash2 } from "lucide-react";
+import { useCart } from "@/lib/CartContext";
+import { Heart, ShoppingCart } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
 export default function Wishlist() {
   const { items, toggle } = useWishlist();
+  const { addToCart } = useCart();
 
   if (items.length === 0) {
     return (
-      <div className="mx-auto max-w-7xl px-6 py-24 text-center">
-        <Heart className="mx-auto mb-4 h-10 w-10 text-slate-600" />
-        <h1 className="text-2xl font-semibold">Your wishlist is empty</h1>
-        <p className="mt-2 text-slate-400">
-          Save games to keep track of what you want to buy later.
-        </p>
+      <div className="py-32 text-center">
+        <Heart className="mx-auto mb-4 h-10 w-10 text-slate-500" />
+        <p className="text-slate-400">Wishlist is empty</p>
         <Link
           to="/"
-          className="mt-6 inline-block rounded-lg bg-purple-600 px-6 py-3 font-medium hover:bg-purple-500 transition"
+          className="mt-6 inline-block bg-purple-600 px-6 py-3 rounded-lg"
         >
-          Browse games
+          Browse Games
         </Link>
       </div>
     );
@@ -25,34 +25,50 @@ export default function Wishlist() {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-14">
-      <h1 className="mb-8 text-3xl font-bold">Wishlist</h1>
+      <h1 className="mb-8 text-2xl font-bold">Wishlist</h1>
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {items.map((item) => (
           <div
             key={item.id}
-            className="group overflow-hidden rounded-xl border border-slate-800 bg-slate-900 transition hover:border-pink-500"
+            className="animate-fade-up border border-slate-800 rounded-xl bg-slate-900 overflow-hidden"
           >
             <Link to={`/product/${item.id}`}>
               <img
                 src={item.image}
-                alt={item.title}
-                className="h-56 w-full object-cover transition group-hover:scale-105"
+                className="h-56 w-full object-cover"
               />
             </Link>
 
-            <div className="flex items-center justify-between p-4">
-              <h3 className="line-clamp-2 text-sm font-semibold">
-                {item.title}
-              </h3>
+            <div className="p-4 space-y-3">
+              <h3 className="text-sm font-semibold">{item.title}</h3>
 
-              <button
-                onClick={() => toggle(item)}
-                className="rounded-lg p-2 text-slate-400 hover:text-red-400 hover:bg-slate-800 transition"
-                title="Remove"
-              >
-                <Trash2 size={16} />
-              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => {
+                    addToCart({
+                      id: item.id,
+                      title: item.title,
+                      image: item.image,
+                      price: 0,
+                    });
+                    toast({
+                      title: "Added to cart",
+                      description: item.title,
+                    });
+                  }}
+                  className="flex-1 bg-purple-600 py-2 rounded-lg text-xs"
+                >
+                  <ShoppingCart size={14} />
+                </button>
+
+                <button
+                  onClick={() => toggle(item)}
+                  className="border border-slate-700 px-3 rounded-lg text-xs"
+                >
+                  Remove
+                </button>
+              </div>
             </div>
           </div>
         ))}
