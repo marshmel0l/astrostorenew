@@ -2,7 +2,55 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useCart } from "@/lib/CartContext";
 import { fetchGames, type Game, type ProductType } from "@/lib/gameData";
-import { ShoppingCart, Globe, Key, Laptop, Users } from "lucide-react";
+import {
+  ShoppingCart,
+  Globe,
+  Key,
+  Laptop,
+  Users,
+  ShieldCheck,
+  Info,
+} from "lucide-react";
+
+type TypeConfig = {
+  label: string;
+  regions: string[];
+  priceMultiplier: number;
+  description: string[];
+};
+
+const TYPE_CONFIG: Record<ProductType, TypeConfig> = {
+  key: {
+    label: "Game Key",
+    regions: ["Global", "EU", "US"],
+    priceMultiplier: 1,
+    description: [
+      "Official activation key",
+      "Redeem on supported platform",
+      "Permanent ownership",
+    ],
+  },
+  offline_account: {
+    label: "Offline Account",
+    regions: ["EU"],
+    priceMultiplier: 0.8,
+    description: [
+      "Full game access",
+      "Offline play only",
+      "No email or password changes",
+    ],
+  },
+  shared_account: {
+    label: "Shared Account",
+    regions: ["EU", "UK"],
+    priceMultiplier: 0.65,
+    description: [
+      "Online & offline access",
+      "Shared with other users",
+      "Limited simultaneous usage",
+    ],
+  },
+};
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -25,14 +73,20 @@ export default function ProductDetail() {
 
   if (!product || !purchaseType) {
     return (
-      <div className="flex justify-center py-20 text-slate-400">
+      <div className="py-20 text-center text-slate-400">
         Loading product…
       </div>
     );
   }
 
+  const typeConfig = TYPE_CONFIG[purchaseType];
+  const finalPrice = (
+    product.price * typeConfig.priceMultiplier
+  ).toFixed(2);
+
   return (
-    <div className="mx-auto max-w-6xl px-6 py-14 text-slate-100">
+    <div className="mx-auto max-w-7xl px-6 py-14 text-slate-100">
+      {/* TOP SECTION */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
         {/* Image */}
         <div className="rounded-xl overflow-hidden border border-slate-800 bg-slate-900">
@@ -43,80 +97,34 @@ export default function ProductDetail() {
           />
         </div>
 
-        {/* Details */}
+        {/* Main Info */}
         <div className="space-y-6">
           <h1 className="text-3xl font-bold">{product.title}</h1>
 
-          <div className="flex items-center gap-2 text-sm text-slate-400">
-            <Globe size={16} />
-            {product.regions.includes("Global")
-              ? "Global"
-              : product.regions.join(", ")}
-          </div>
-
           {/* Purchase Type Selector */}
           <div className="flex gap-3">
-            {product.available_types.includes("key") && (
-              <TypeButton
-                active={purchaseType === "key"}
-                onClick={() => setPurchaseType("key")}
-                icon={<Key size={14} />}
-                label="Game Key"
-              />
-            )}
-            {product.available_types.includes("offline_account") && (
-              <TypeButton
-                active={purchaseType === "offline_account"}
-                onClick={() => setPurchaseType("offline_account")}
-                icon={<Laptop size={14} />}
-                label="Offline Account"
-              />
-            )}
-            {product.available_types.includes("shared_account") && (
-              <TypeButton
-                active={purchaseType === "shared_account"}
-                onClick={() => setPurchaseType("shared_account")}
-                icon={<Users size={14} />}
-                label="Shared Account"
-              />
-            )}
-          </div>
-
-          {/* Dynamic Info */}
-          <div className="rounded-xl border border-slate-800 bg-slate-900 p-5 text-sm text-slate-300">
-            {purchaseType === "key" && (
-              <ul className="space-y-1">
-                <li>• Official activation key</li>
-                <li>• Redeem on supported platform</li>
-                <li>• Permanent ownership</li>
-              </ul>
-            )}
-            {purchaseType === "offline_account" && (
-              <ul className="space-y-1">
-                <li>• Full game access</li>
-                <li>• Offline play only</li>
-                <li>• No email changes</li>
-              </ul>
-            )}
-            {purchaseType === "shared_account" && (
-              <ul className="space-y-1">
-                <li>• Online & offline access</li>
-                <li>• Shared with other users</li>
-                <li>• Limited simultaneous usage</li>
-              </ul>
-            )}
-          </div>
-
-          {/* Region Warning */}
-          <div className="rounded-lg border border-yellow-500/30 bg-yellow-500/10 p-4 text-sm text-yellow-300">
-            ⚠️ Make sure your account region matches:
-            <strong> {product.regions.join(", ")}</strong>
+            {product.available_types.map((type) => (
+              <button
+                key={type}
+                onClick={() => setPurchaseType(type)}
+                className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm transition ${
+                  purchaseType === type
+                    ? "bg-purple-600 text-white"
+                    : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+                }`}
+              >
+                {type === "key" && <Key size={14} />}
+                {type === "offline_account" && <Laptop size={14} />}
+                {type === "shared_account" && <Users size={14} />}
+                {TYPE_CONFIG[type].label}
+              </button>
+            ))}
           </div>
 
           {/* Price + CTA */}
           <div className="flex items-center justify-between">
             <span className="text-3xl font-bold text-purple-400">
-              ${product.price.toFixed(2)}
+              €{finalPrice}
             </span>
 
             <button
@@ -125,17 +133,61 @@ export default function ProductDetail() {
                   id: product.id,
                   title: product.title,
                   image: product.image,
-                  price: product.price,
+                  price: Number(finalPrice),
                   type: purchaseType,
                 })
               }
-              className="flex items-center gap-2 rounded-lg bg-purple-600 px-6 py-3 font-medium hover:bg-purple-500 transition"
+              className="flex items-center gap-2 rounded-lg bg-green-600 px-6 py-3 font-medium hover:bg-green-500 transition"
             >
               <ShoppingCart size={18} />
-              Add to Cart
+              Buy Now
             </button>
           </div>
+
+          {/* REGION WARNING (DEPENDS ON TYPE) */}
+          <div className="rounded-lg border border-yellow-500/30 bg-yellow-500/10 p-4 text-sm text-yellow-300 flex gap-2">
+            <Globe size={18} />
+            Available regions for this option:
+            <strong> {typeConfig.regions.join(", ")}</strong>
+          </div>
         </div>
+      </div>
+
+      {/* SECTION 2 – PRODUCT DETAILS */}
+      <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <DetailBox
+          icon={<Info size={18} />}
+          title="What you get"
+          items={typeConfig.description}
+        />
+        <DetailBox
+          icon={<ShieldCheck size={18} />}
+          title="Guarantees"
+          items={[
+            "Instant delivery",
+            "Replacement if invalid",
+            "Support included",
+          ]}
+        />
+        <DetailBox
+          icon={<Globe size={18} />}
+          title="Activation & Region"
+          items={[
+            `Regions: ${typeConfig.regions.join(", ")}`,
+            "VPN may be required",
+            "Region mismatch not refundable",
+          ]}
+        />
+      </div>
+
+      {/* SECTION 3 – ABOUT */}
+      <div className="mt-14 rounded-xl border border-slate-800 bg-slate-900 p-8">
+        <h2 className="mb-4 text-xl font-semibold">About the game</h2>
+        <p className="text-slate-400 leading-relaxed">
+          {product.title} delivers an immersive experience with high-quality
+          gameplay and deep progression systems. This product is offered in
+          multiple formats to fit different budgets and usage preferences.
+        </p>
       </div>
     </div>
   );
@@ -143,28 +195,26 @@ export default function ProductDetail() {
 
 /* ========================= */
 
-function TypeButton({
-  active,
-  onClick,
+function DetailBox({
   icon,
-  label,
+  title,
+  items,
 }: {
-  active: boolean;
-  onClick: () => void;
   icon: React.ReactNode;
-  label: string;
+  title: string;
+  items: string[];
 }) {
   return (
-    <button
-      onClick={onClick}
-      className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm transition ${
-        active
-          ? "bg-purple-600 text-white"
-          : "bg-slate-800 text-slate-300 hover:bg-slate-700"
-      }`}
-    >
-      {icon}
-      {label}
-    </button>
+    <div className="rounded-xl border border-slate-800 bg-slate-900 p-5">
+      <div className="mb-3 flex items-center gap-2 text-sm font-semibold">
+        {icon}
+        {title}
+      </div>
+      <ul className="space-y-1 text-sm text-slate-400">
+        {items.map((i) => (
+          <li key={i}>• {i}</li>
+        ))}
+      </ul>
+    </div>
   );
 }
