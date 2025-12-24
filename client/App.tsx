@@ -6,17 +6,18 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { WishlistProvider } from "@/lib/WishlistContext";
-import Wishlist from "@/pages/Wishlist";
 
 import { CartProvider } from "@/lib/CartContext";
+import { WishlistProvider } from "@/lib/WishlistContext";
+
 import Layout from "@/components/Layout";
 
-import Index from "./pages/Index";
-import ProductDetail from "./pages/ProductDetail";
-import Cart from "./pages/Cart";
-import NotFound from "./pages/NotFound";
+import Index from "@/pages/Index";
+import ProductDetail from "@/pages/ProductDetail";
+import Cart from "@/pages/Cart";
+import Wishlist from "@/pages/Wishlist";
 import Login from "@/pages/Login";
+import NotFound from "@/pages/NotFound";
 
 import Account from "@/pages/account/Account";
 import AccountProducts from "@/pages/account/Products";
@@ -29,35 +30,34 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <WishlistProvider>
-      <CartProvider>
-        <Toaster />
-        <Sonner />
+        <CartProvider>
+          <Toaster />
+          <Sonner />
 
-        <BrowserRouter>
-          <Routes>
-            {/* GLOBAL LAYOUT */}
-            <Route element={<Layout />}>
-              {/* PUBLIC ROUTES */}
-              <Route path="/" element={<Index />} />
-              <Route path="/product/:id" element={<ProductDetail />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/login" element={<Login />} />
+          <BrowserRouter>
+            <Routes>
+              <Route element={<Layout />}>
+                {/* PUBLIC */}
+                <Route path="/" element={<Index />} />
+                <Route path="/product/:id" element={<ProductDetail />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/wishlist" element={<Wishlist />} />
+                <Route path="/login" element={<Login />} />
 
-              {/* ACCOUNT ROUTES */}
-              <Route path="/account" element={<Account />}>
-                <Route index element={<AccountProducts />} />
-                <Route path="products" element={<AccountProducts />} />
-                <Route path="orders" element={<AccountOrders />} />
-                <Route path="reviews" element={<AccountReviews />} />
+                {/* ACCOUNT */}
+                <Route path="/account" element={<Account />}>
+                  <Route index element={<AccountProducts />} />
+                  <Route path="products" element={<AccountProducts />} />
+                  <Route path="orders" element={<AccountOrders />} />
+                  <Route path="reviews" element={<AccountReviews />} />
+                </Route>
+
+                {/* FALLBACK */}
+                <Route path="*" element={<NotFound />} />
               </Route>
-
-              {/* CATCH-ALL */}
-              <Route path="/wishlist" element={<Wishlist />} />
-              <Route path="*" element={<NotFound />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </CartProvider>
+            </Routes>
+          </BrowserRouter>
+        </CartProvider>
       </WishlistProvider>
     </TooltipProvider>
   </QueryClientProvider>
