@@ -78,16 +78,16 @@ const { items } = useWishlist();
 
           {/* RIGHT SIDE */}
           <div className="flex items-center gap-3">
-            {/* Wishlist */}
-            <button
-              className="relative rounded-lg p-2 text-slate-300 hover:text-pink-400 hover:bg-slate-800 transition"
-              title="Wishlist"
-            >
-              <Heart className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-pink-600 text-[10px] text-white">
-                0
-              </span>
-            </button>
+         {/* Wishlist */}
+<button
+  className="relative rounded-lg p-2 text-slate-300 hover:text-pink-400 hover:bg-slate-800 transition"
+  title="Wishlist"
+>
+  <Heart className="h-5 w-5" />
+  <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-pink-600 text-[10px] text-white">
+    0
+  </span>
+</button>
 
             {/* Currency selector (pill) */}
             <div className="flex items-center rounded-full border border-slate-700 bg-slate-900">
