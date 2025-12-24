@@ -34,8 +34,6 @@ const App = () => (
   path="/admin"
   element={
     <RequireAdmin>
-      <AdminLayout />
-    </RequireAdmin>
   }
 />
               <Route path="/account" element={<Account />}>
@@ -54,6 +52,8 @@ const App = () => (
           </BrowserRouter>
         </CartProvider>
       </TooltipProvider>
+    </AdminLayout>
+     </RequireAdmin>
   </QueryClientProvider>
 );
 
