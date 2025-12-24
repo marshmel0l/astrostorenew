@@ -3,10 +3,6 @@ import "./global.css";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-import RequireAdmin from "@/components/RequireAdmin";
-import AdminLayout from "@/pages/admin/AdminLayout";
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -35,16 +31,6 @@ const App = () => (
 
         <BrowserRouter>
           <Routes>
-            {/* ADMIN ROUTES */}
-            <Route
-              path="/admin/*"
-              element={
-                <RequireAdmin>
-                  <AdminLayout />
-                </RequireAdmin>
-              }
-            />
-
             {/* ACCOUNT ROUTES */}
             <Route path="/account" element={<Account />}>
               <Route index element={<AccountProducts />} />
