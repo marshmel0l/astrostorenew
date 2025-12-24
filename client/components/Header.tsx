@@ -25,9 +25,6 @@ export default function Header() {
     (localStorage.getItem("currency") as Currency) || "EUR"
   );
 
-  /* =========================
-     AUTH (NO FLICKER)
-  ========================= */
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
       setUser(data.user);
@@ -46,9 +43,6 @@ export default function Header() {
     };
   }, []);
 
-  /* =========================
-     CURRENCY
-  ========================= */
   const changeCurrency = (c: Currency) => {
     setCurrency(c);
     localStorage.setItem("currency", c);
@@ -61,7 +55,7 @@ export default function Header() {
           {/* LOGO */}
           <Link
             to="/"
-            className="flex items-center gap-3 group hover:opacity-80 transition"
+            className="flex items-center gap-3 hover:opacity-80 transition"
           >
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 via-pink-500 to-purple-600 shadow-lg">
               <Rocket className="h-6 w-6 text-white" />
@@ -70,9 +64,6 @@ export default function Header() {
               <div className="text-lg font-bold text-white">Astro</div>
               <div className="text-xs tracking-widest text-purple-400">
                 STORE
-              </div>
-              <div className="text-[10px] tracking-widest text-slate-400">
-                PC GAMES
               </div>
             </div>
           </Link>
