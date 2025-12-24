@@ -10,6 +10,7 @@ import {
 import { useCart } from "@/lib/CartContext";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { useWishlist } from "@/lib/WishlistContext";
 
 type Currency = "USD" | "EUR" | "EGP";
 
@@ -17,7 +18,7 @@ export default function Header() {
   const { getTotalItems } = useCart();
   const cartCount = getTotalItems();
   const location = useLocation();
-
+const { items } = useWishlist();
   const [user, setUser] = useState<any>(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [currency, setCurrency] = useState<Currency>(
