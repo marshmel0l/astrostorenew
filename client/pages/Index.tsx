@@ -3,6 +3,15 @@ import { ChevronDown, Flame, Star } from "lucide-react";
 import Header from "@/components/Header";
 import GameCard from "@/components/GameCard";
 import { fetchGames, searchGames, sortGames, type Game } from "@/lib/gameData";
+<GameCard
+  id={game.id}
+  title={game.title}
+  image={game.image}
+  price={game.price}
+  rating={game.rating}
+  regions={game.regions}
+  available_types={game.available_types}
+/>
 
 export default function Index() {
   const [games, setGames] = useState<Game[]>([]);
