@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { WishlistProvider } from "@/lib/WishlistContext";
 
 import { CartProvider } from "@/lib/CartContext";
 import Layout from "@/components/Layout";
@@ -26,6 +27,7 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
+      <WishlistProvider>
       <CartProvider>
         <Toaster />
         <Sonner />
@@ -49,11 +51,13 @@ const App = () => (
               </Route>
 
               {/* CATCH-ALL */}
+              
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>
         </BrowserRouter>
       </CartProvider>
+      </WishlistProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
