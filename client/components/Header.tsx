@@ -7,16 +7,15 @@ import {
   Globe,
 } from "lucide-react";
 import { useCart } from "@/lib/CartContext";
-import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
 import { useWishlist } from "@/lib/WishlistContext";
+import { supabase } from "@/lib/supabase";
+import { useEffect, useState } from "react";
 
 type Currency = "USD" | "EUR" | "EGP";
 
 export default function Header() {
   const { getTotalItems } = useCart();
   const { items } = useWishlist();
-
   const cartCount = getTotalItems();
 
   const [user, setUser] = useState<any>(null);
@@ -32,15 +31,13 @@ export default function Header() {
     });
 
     const { data: listener } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
+      (_e, session) => {
         setUser(session?.user ?? null);
         setAuthLoading(false);
       }
     );
 
-    return () => {
-      listener.subscription.unsubscribe();
-    };
+    return () => listener.subscription.unsubscribe();
   }, []);
 
   const changeCurrency = (c: Currency) => {
@@ -49,87 +46,71 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-slate-800 bg-slate-950/80 backdrop-blur-xl animate-slide-down">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between py-4">
-          {/* LOGO */}
+    <header className="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/80 backdrop-blur-xl">
+      <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
+        <Link to="/" className="flex items-center gap-3">
+          <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+            <Rocket className="text-white" />
+          </div>
+          <div>
+            <div className="font-bold text-white">Astro</div>
+            <div className="text-xs text-purple-400 tracking-widest">
+              STORE
+            </div>
+          </div>
+        </Link>
+
+        <div className="flex items-center gap-3">
           <Link
-            to="/"
-            className="flex items-center gap-3 hover:opacity-80 transition"
+            to="/wishlist"
+            className="relative p-2 hover:bg-slate-800 rounded-lg"
           >
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 via-pink-500 to-purple-600 shadow-lg">
-              <Rocket className="h-6 w-6 text-white" />
-            </div>
-            <div className="leading-tight">
-              <div className="text-lg font-bold text-white">Astro</div>
-              <div className="text-xs tracking-widest text-purple-400">
-                STORE
-              </div>
-            </div>
+            <Heart className="h-5 w-5 text-pink-400" />
+            {items.length > 0 && (
+              <span className="absolute -top-1 -right-1 bg-pink-600 text-white text-[10px] h-4 w-4 rounded-full flex items-center justify-center">
+                {items.length}
+              </span>
+            )}
           </Link>
 
-          {/* RIGHT SIDE */}
-          <div className="flex items-center gap-3">
-            {/* Wishlist */}
-<Link
-  to="/wishlist"
-  className="relative rounded-lg p-2 text-slate-300 hover:text-pink-400 hover:bg-slate-800 transition"
-  title="Wishlist"
->
-  <Heart className="h-5 w-5" />
-  {items.length > 0 && (
-    <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-pink-600 text-[10px] text-white">
-      {items.length}
-    </span>
-  )}
-</Link>
-
-            {/* Currency selector */}
-            <div className="flex items-center rounded-full border border-slate-700 bg-slate-900">
-              {(["USD", "EUR", "EGP"] as Currency[]).map((c) => (
-                <button
-                  key={c}
-                  onClick={() => changeCurrency(c)}
-                  className={`px-3 py-1 text-xs transition ${
-                    currency === c
-                      ? "bg-purple-600 text-white rounded-full"
-                      : "text-slate-400 hover:text-slate-200"
-                  }`}
-                >
-                  {c}
-                </button>
-              ))}
-            </div>
-
-            {/* Language */}
-            <button
-              className="rounded-lg p-2 text-slate-300 hover:text-purple-400 hover:bg-slate-800 transition"
-              title="Language"
-            >
-              <Globe className="h-5 w-5" />
-            </button>
-
-            {/* Cart */}
-            <Link
-              to="/cart"
-              className="relative rounded-lg p-2 text-slate-300 hover:text-purple-400 hover:bg-slate-800 transition"
-            >
-              <ShoppingCart className="h-5 w-5" />
-              {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-purple-600 text-[10px] text-white">
-                  {cartCount}
-                </span>
-              )}
-            </Link>
-
-            {/* Account */}
-            <Link
-              to={user ? "/account" : "/login"}
-              className="rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-200 hover:border-purple-500 hover:text-purple-400 transition"
-            >
-              {authLoading ? "•••" : user ? "Account" : "Login"}
-            </Link>
+          <div className="flex rounded-full border border-slate-700 bg-slate-900">
+            {(["USD", "EUR", "EGP"] as Currency[]).map((c) => (
+              <button
+                key={c}
+                onClick={() => changeCurrency(c)}
+                className={`px-3 py-1 text-xs ${
+                  currency === c
+                    ? "bg-purple-600 text-white rounded-full"
+                    : "text-slate-400"
+                }`}
+              >
+                {c}
+              </button>
+            ))}
           </div>
+
+          <button className="p-2 hover:bg-slate-800 rounded-lg">
+            <Globe className="h-5 w-5" />
+          </button>
+
+          <Link
+            to="/cart"
+            className="relative p-2 hover:bg-slate-800 rounded-lg"
+          >
+            <ShoppingCart className="h-5 w-5" />
+            {cartCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-purple-600 text-white text-[10px] h-4 w-4 rounded-full flex items-center justify-center">
+                {cartCount}
+              </span>
+            )}
+          </Link>
+
+          <Link
+            to={user ? "/account" : "/login"}
+            className="border border-slate-700 px-4 py-2 rounded-lg text-sm"
+          >
+            {authLoading ? "•••" : user ? "Account" : "Login"}
+          </Link>
         </div>
       </div>
     </header>
