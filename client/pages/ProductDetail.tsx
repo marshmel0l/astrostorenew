@@ -18,40 +18,42 @@ import {
 
 type TypeConfig = {
   label: string;
-  regions: string[];
   priceMultiplier: number;
   description: string[];
+  requiresRegion?: boolean;
+  regions?: string[];
 };
 
 const TYPE_CONFIG: Record<ProductType, TypeConfig> = {
   key: {
     label: "Game Key",
-    regions: ["Global", "EU", "US"],
     priceMultiplier: 1,
+    requiresRegion: true,
+    regions: ["Global", "EU", "US"],
     description: [
       "Official activation key",
       "Permanent ownership",
-      "Redeem on supported platform",
+      "May require VPN",
     ],
   },
   offline_account: {
     label: "Offline Account",
-    regions: ["EU"],
     priceMultiplier: 0.8,
     description: [
-      "Full game access",
-      "Offline play only",
+      "Play in offline mode",
+      "Unlimited access",
       "No email or password changes",
+      "Login from anywhere",
     ],
   },
   shared_account: {
     label: "Shared Account",
-    regions: ["EU", "UK"],
     priceMultiplier: 0.65,
     description: [
+      "Play from provided account",
       "Online & offline access",
-      "Shared with other users",
-      "Limited simultaneous usage",
+      "Shared usage",
+      "Login from anywhere",
     ],
   },
 };
@@ -63,28 +65,21 @@ export default function ProductDetail() {
 
   const [product, setProduct] = useState<Game | null>(null);
   const [purchaseType, setPurchaseType] = useState<ProductType | null>(null);
-  const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
+  const [region, setRegion] = useState<string>("Global");
 
   useEffect(() => {
-    const load = async () => {
-      const games = await fetchGames();
+    fetchGames().then((games) => {
       const found = games.find((g) => g.id === id) || null;
       setProduct(found);
-
-      if (found) {
-        const defaultType = found.available_types[0];
-        setPurchaseType(defaultType);
-        setSelectedRegion(TYPE_CONFIG[defaultType].regions[0]);
-      }
-    };
-    load();
+      if (found) setPurchaseType(found.available_types[0]);
+    });
   }, [id]);
 
-if (!product) return null;
+  if (!product || !purchaseType) return null;
 
-  const typeConfig = TYPE_CONFIG[purchaseType];
+  const config = TYPE_CONFIG[purchaseType];
   const finalPrice = (
-    product.price * typeConfig.priceMultiplier
+    product.price * config.priceMultiplier
   ).toFixed(2);
 
   const handleAddToCart = () => {
@@ -94,18 +89,18 @@ if (!product) return null;
       image: product.image,
       price: Number(finalPrice),
       type: purchaseType,
-      region: selectedRegion,
+      region: config.requiresRegion ? region : "N/A",
     });
 
     toast({
       title: "Added to cart",
-      description: `${product.title} added successfully`,
+      description: product.title,
     });
   };
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-14">
-      {/* BUY SECTION */}
+      {/* TOP */}
       <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
         <div className="overflow-hidden rounded-xl border border-slate-800 bg-slate-900">
           <img
@@ -116,7 +111,7 @@ if (!product) return null;
         </div>
 
         <div className="space-y-6">
-          <div className="flex items-start justify-between gap-4">
+          <div className="flex items-start justify-between">
             <h1 className="text-3xl font-bold">{product.title}</h1>
 
             <button
@@ -142,11 +137,8 @@ if (!product) return null;
             {product.available_types.map((type) => (
               <PillButton
                 key={type}
-                active={purchaseType === "key"}
-                onClick={() => {
-                  setPurchaseType(type);
-                  setSelectedRegion(TYPE_CONFIG[type].regions[0]);
-                }}
+                active={purchaseType === type}
+                onClick={() => setPurchaseType(type)}
                 icon={
                   type === "key" ? (
                     <Key size={14} />
@@ -161,25 +153,27 @@ if (!product) return null;
             ))}
           </div>
 
-          {/* REGION SELECTOR */}
-          <div>
-            <p className="mb-2 flex items-center gap-1 text-sm text-slate-400">
-              <Globe size={14} /> Select region
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {typeConfig.regions.map((region) => (
-                <PillButton
-                  key={region}
-                  active={selectedRegion === region}
-                  onClick={() => setSelectedRegion(region)}
-                  label={region}
-                />
-              ))}
+          {/* REGION — ONLY FOR KEYS */}
+          {config.requiresRegion && (
+            <div>
+              <p className="mb-2 flex items-center gap-1 text-sm text-slate-400">
+                <Globe size={14} /> Select region
+              </p>
+              <div className="flex gap-2">
+                {config.regions!.map((r) => (
+                  <PillButton
+                    key={r}
+                    active={region === r}
+                    onClick={() => setRegion(r)}
+                    label={r}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
-          {/* PRICE + ACTIONS */}
-          <div className="flex flex-wrap items-center gap-4">
+          {/* PRICE */}
+          <div className="flex items-center gap-4">
             <span className="text-3xl font-bold text-purple-400">
               €{finalPrice}
             </span>
@@ -197,9 +191,13 @@ if (!product) return null;
             </button>
           </div>
 
-          <div className="rounded-lg border border-yellow-500/30 bg-yellow-500/10 p-4 text-sm text-yellow-300">
-            ⚠️ This option works only in <strong>{selectedRegion}</strong>. Make
-            sure your account region matches.
+          {/* CONDITIONS */}
+          <div className="rounded-lg border border-slate-800 bg-slate-900 p-4 text-sm text-slate-400">
+            <ul className="space-y-1">
+              {config.description.map((d) => (
+                <li key={d}>• {d}</li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>
@@ -209,7 +207,7 @@ if (!product) return null;
         <DetailBox
           icon={<Info size={18} />}
           title="What you get"
-          items={typeConfig.description}
+          items={config.description}
         />
         <DetailBox
           icon={<ShieldCheck size={18} />}
@@ -221,42 +219,22 @@ if (!product) return null;
           ]}
         />
         <DetailBox
-          icon={<Globe size={18} />}
-          title="Activation & Region"
+          icon={<Cpu size={18} />}
+          title="System Requirements"
           items={[
-            `Region: ${selectedRegion}`,
-            "VPN may be required",
-            "Region mismatch not refundable",
+            "OS: Windows 10 (64-bit)",
+            "CPU: Intel i5 / Ryzen 5",
+            "RAM: 8 GB",
+            "GPU: GTX 1060 / RX 580",
+            "Storage: 70 GB",
           ]}
         />
-      </div>
-
-      {/* ABOUT + SYSTEM REQUIREMENTS */}
-      <div className="mt-14 space-y-6 rounded-xl border border-slate-800 bg-slate-900 p-8">
-        <h2 className="text-xl font-semibold">About the game</h2>
-        <p className="leading-relaxed text-slate-400">
-          {product.title} delivers an immersive experience with rich gameplay,
-          deep progression systems, and high production quality.
-        </p>
-
-        <div>
-          <h3 className="mb-2 flex items-center gap-2 font-semibold">
-            <Cpu size={18} /> System Requirements
-          </h3>
-          <ul className="space-y-1 text-sm text-slate-400">
-            <li>OS: Windows 10 (64-bit)</li>
-            <li>CPU: Intel i5 / Ryzen 5</li>
-            <li>RAM: 8 GB</li>
-            <li>GPU: GTX 1060 / RX 580</li>
-            <li>Storage: 70 GB available space</li>
-          </ul>
-        </div>
       </div>
     </div>
   );
 }
 
-/* ========================= */
+/* UI */
 
 function PillButton({
   active,
