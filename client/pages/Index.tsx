@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react";
-import Header from "@/components/Header";
 import GameCard from "@/components/GameCard";
 import { fetchGames, searchGames, sortGames, type Game } from "@/lib/gameData";
 
@@ -36,13 +35,11 @@ export default function Index() {
   }, [games, searchQuery, sortBy]);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
-      <Header />
-
-      {/* Hero */}
+    <>
+      {/* HERO */}
       <section className="border-b border-slate-800">
         <div className="mx-auto max-w-7xl px-6 py-20">
-          <h1 className="text-4xl sm:text-5xl font-bold">
+          <h1 className="text-4xl font-bold sm:text-5xl">
             Buy Games Smarter.
             <br />
             <span className="text-purple-400">
@@ -51,7 +48,7 @@ export default function Index() {
           </h1>
 
           <p className="mt-4 max-w-2xl text-slate-400">
-            Digital games with keys, offline accounts, and shared access.
+            Digital PC games with keys, offline accounts, and shared access.
             Secure delivery. Clear rules.
           </p>
 
@@ -68,12 +65,9 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Games */}
-      <section
-        id="games"
-        className="mx-auto max-w-7xl px-6 py-14"
-      >
-        {/* Toolbar */}
+      {/* GAMES */}
+      <section id="games" className="mx-auto max-w-7xl px-6 py-14">
+        {/* TOOLBAR */}
         <div className="mb-8 flex items-center justify-between">
           <p className="text-sm text-slate-400">
             Showing {filteredGames.length} of {games.length} games
@@ -96,9 +90,9 @@ export default function Index() {
           </div>
         </div>
 
-        {/* Grid */}
+        {/* GRID */}
         {isLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {Array.from({ length: 8 }).map((_, i) => (
               <div
                 key={i}
@@ -111,26 +105,13 @@ export default function Index() {
             No products available
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {filteredGames.map((game) => (
-              <GameCard
-                key={game.id}
-                id={game.id}
-                title={game.title}
-                image={game.image}
-                price={game.price}
-                rating={game.rating}
-                regions={game.regions}
-                available_types={game.available_types}
-              />
+              <GameCard key={game.id} {...game} />
             ))}
           </div>
         )}
       </section>
-
-      <footer className="border-t border-slate-800 py-10 text-center text-sm text-slate-500">
-        © 2026 Astro Store
-      </footer>
-    </div>
+    </>
   );
 }
