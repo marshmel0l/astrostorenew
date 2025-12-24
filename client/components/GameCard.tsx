@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { useCart } from "@/lib/CartContext";
 import { useState } from "react";
 import type { ProductType } from "@/lib/gameData";
+import { Heart } from "lucide-react";
+import { useWishlist } from "@/lib/WishlistContext";
 
 interface GameCardProps {
   id: string;
@@ -25,6 +27,8 @@ export default function GameCard({
 }: GameCardProps) {
   const { addToCart } = useCart();
   const [isAdded, setIsAdded] = useState(false);
+const { toggle, has } = useWishlist();
+const wished = has(id);
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -42,6 +46,19 @@ export default function GameCard({
     <Link to={`/product/${id}`}>
       <div className="group h-full overflow-hidden rounded-xl border border-slate-800 bg-slate-900 transition hover:border-purple-500 hover:shadow-lg hover:shadow-purple-500/20">
         {/* Image */}
+        <button
+  onClick={(e) => {
+    e.preventDefault();
+    toggle({ id, title, image });
+  }}
+  className={`absolute top-3 right-3 rounded-full p-2 transition ${
+    wished
+      ? "bg-pink-600 text-white"
+      : "bg-black/60 text-white hover:bg-pink-600"
+  }`}
+>
+  <Heart size={14} fill={wished ? "currentColor" : "none"} />
+</button>
         <div className="relative h-60 bg-slate-800 overflow-hidden">
           <img
             src={image}
