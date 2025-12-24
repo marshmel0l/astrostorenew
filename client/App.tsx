@@ -8,6 +8,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 import { CartProvider } from "@/lib/CartContext";
+import Layout from "@/components/Layout";
 
 import Index from "./pages/Index";
 import ProductDetail from "./pages/ProductDetail";
@@ -31,22 +32,25 @@ const App = () => (
 
         <BrowserRouter>
           <Routes>
-            {/* ACCOUNT ROUTES */}
-            <Route path="/account" element={<Account />}>
-              <Route index element={<AccountProducts />} />
-              <Route path="products" element={<AccountProducts />} />
-              <Route path="orders" element={<AccountOrders />} />
-              <Route path="reviews" element={<AccountReviews />} />
+            {/* GLOBAL LAYOUT */}
+            <Route element={<Layout />}>
+              {/* PUBLIC ROUTES */}
+              <Route path="/" element={<Index />} />
+              <Route path="/product/:id" element={<ProductDetail />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/login" element={<Login />} />
+
+              {/* ACCOUNT ROUTES */}
+              <Route path="/account" element={<Account />}>
+                <Route index element={<AccountProducts />} />
+                <Route path="products" element={<AccountProducts />} />
+                <Route path="orders" element={<AccountOrders />} />
+                <Route path="reviews" element={<AccountReviews />} />
+              </Route>
+
+              {/* CATCH-ALL */}
+              <Route path="*" element={<NotFound />} />
             </Route>
-
-            {/* PUBLIC ROUTES */}
-            <Route path="/login" element={<Login />} />
-            <Route path="/" element={<Index />} />
-            <Route path="/product/:id" element={<ProductDetail />} />
-            <Route path="/cart" element={<Cart />} />
-
-            {/* CATCH-ALL */}
-            <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
       </CartProvider>
