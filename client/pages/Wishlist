@@ -1,0 +1,62 @@
+import { Link } from "react-router-dom";
+import { useWishlist } from "@/lib/WishlistContext";
+import { Heart, Trash2 } from "lucide-react";
+
+export default function Wishlist() {
+  const { items, toggle } = useWishlist();
+
+  if (items.length === 0) {
+    return (
+      <div className="mx-auto max-w-7xl px-6 py-24 text-center">
+        <Heart className="mx-auto mb-4 h-10 w-10 text-slate-600" />
+        <h1 className="text-2xl font-semibold">Your wishlist is empty</h1>
+        <p className="mt-2 text-slate-400">
+          Save games to keep track of what you want to buy later.
+        </p>
+        <Link
+          to="/"
+          className="mt-6 inline-block rounded-lg bg-purple-600 px-6 py-3 font-medium hover:bg-purple-500 transition"
+        >
+          Browse games
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mx-auto max-w-7xl px-6 py-14">
+      <h1 className="mb-8 text-3xl font-bold">Wishlist</h1>
+
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {items.map((item) => (
+          <div
+            key={item.id}
+            className="group overflow-hidden rounded-xl border border-slate-800 bg-slate-900 transition hover:border-pink-500"
+          >
+            <Link to={`/product/${item.id}`}>
+              <img
+                src={item.image}
+                alt={item.title}
+                className="h-56 w-full object-cover transition group-hover:scale-105"
+              />
+            </Link>
+
+            <div className="flex items-center justify-between p-4">
+              <h3 className="line-clamp-2 text-sm font-semibold">
+                {item.title}
+              </h3>
+
+              <button
+                onClick={() => toggle(item)}
+                className="rounded-lg p-2 text-slate-400 hover:text-red-400 hover:bg-slate-800 transition"
+                title="Remove"
+              >
+                <Trash2 size={16} />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
