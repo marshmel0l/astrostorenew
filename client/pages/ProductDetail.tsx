@@ -80,13 +80,7 @@ export default function ProductDetail() {
     load();
   }, [id]);
 
-  if (!product || !purchaseType || !selectedRegion) {
-    return (
-      <div className="flex min-h-[60vh] items-center justify-center text-slate-400">
-        Loading product…
-      </div>
-    );
-  }
+if (!product) return null;
 
   const typeConfig = TYPE_CONFIG[purchaseType];
   const finalPrice = (
@@ -148,7 +142,7 @@ export default function ProductDetail() {
             {product.available_types.map((type) => (
               <PillButton
                 key={type}
-                active={purchaseType === type}
+                active={purchaseType === "key"}
                 onClick={() => {
                   setPurchaseType(type);
                   setSelectedRegion(TYPE_CONFIG[type].regions[0]);
