@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Header from "@/components/Header";
+import { useWishlist } from "@/lib/WishlistContext";
 import { useCart } from "@/lib/CartContext";
 import { fetchGames, type Game, type ProductType } from "@/lib/gameData";
 import { toast } from "@/hooks/use-toast";
@@ -58,6 +59,7 @@ const TYPE_CONFIG: Record<ProductType, TypeConfig> = {
 export default function ProductDetail() {
   const { id } = useParams();
   const { addToCart } = useCart();
+const { toggle, has } = useWishlist();
 
   const [product, setProduct] = useState<Game | null>(null);
   const [purchaseType, setPurchaseType] = useState<ProductType | null>(null);
@@ -105,6 +107,19 @@ export default function ProductDetail() {
       description: `${product.title} added successfully`,
     });
   };
+<button
+  onClick={() =>
+    toggle({
+      id: product.id,
+      title: product.title,
+      image: product.image,
+    })
+  }
+  className="flex items-center gap-2 text-sm text-slate-400 hover:text-pink-400 transition"
+>
+  <Heart size={16} fill={has(product.id) ? "currentColor" : "none"} />
+  {has(product.id) ? "Saved" : "Save"}
+</button>
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
