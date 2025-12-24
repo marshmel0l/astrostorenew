@@ -1,5 +1,7 @@
 import "./global.css";
 
+import RequireAdmin from "@/components/RequireAdmin";
+import AdminLayout from "@/pages/admin/AdminLayout";
 import { Toaster } from "@/components/ui/toaster";
 import { createRoot } from "react-dom/client";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -28,6 +30,14 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <Routes>
+              <Route
+  path="/admin"
+  element={
+    <RequireAdmin>
+      <AdminLayout />
+    </RequireAdmin>
+  }
+/>
               <Route path="/account" element={<Account />}>
   <Route index element={<AccountProducts />} />
   <Route path="products" element={<AccountProducts />} />
