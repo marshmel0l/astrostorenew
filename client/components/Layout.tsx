@@ -3,16 +3,13 @@ import Header from "@/components/Header";
 
 export default function Layout() {
   return (
-    <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100">
+    <div className="min-h-screen bg-slate-950 text-slate-100">
       <Header />
-
-      {/* Page content */}
-      <main className="flex-1 animate-page-fade">
+      <main className="animate-soft-scale">
         <Outlet />
       </main>
-
-      <footer className="border-t border-slate-800 bg-slate-950 py-8 text-center text-xs text-slate-500">
-        © 2026 Astro Store · PC Games & Digital Goods Marketplace
+      <footer className="border-t border-slate-800 py-10 text-center text-sm text-slate-500">
+        © 2026 Astro Store · Cheap Gift Cards and Gaming Goods
       </footer>
     </div>
   );
