@@ -61,18 +61,23 @@ export default function ProductDetail() {
 
   const [product, setProduct] = useState<Game | null>(null);
   const [purchaseType, setPurchaseType] = useState<ProductType | null>(null);
+  const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
 
   useEffect(() => {
     const load = async () => {
       const games = await fetchGames();
       const found = games.find((g) => g.id === id) || null;
       setProduct(found);
-      if (found) setPurchaseType(found.available_types[0]);
+      if (found) {
+        const defaultType = found.available_types[0];
+        setPurchaseType(defaultType);
+        setSelectedRegion(TYPE_CONFIG[defaultType].regions[0]);
+      }
     };
     load();
   }, [id]);
 
-  if (!product || !purchaseType) {
+  if (!product || !purchaseType || !selectedRegion) {
     return (
       <div className="min-h-screen bg-slate-950 text-slate-400 flex items-center justify-center">
         Loading product…
@@ -85,15 +90,6 @@ export default function ProductDetail() {
     product.price * typeConfig.priceMultiplier
   ).toFixed(2);
 
-  const whatsappCheckout = () => {
-    const message = encodeURIComponent(
-      `Hello, I want to buy:\n\n${product.title}\nType: ${
-        typeConfig.label
-      }\nPrice: €${finalPrice}`
-    );
-    window.location.href = `https://wa.me/XXXXXXXXXXX?text=${message}`;
-  };
-
   const handleAddToCart = () => {
     addToCart({
       id: product.id,
@@ -101,6 +97,7 @@ export default function ProductDetail() {
       image: product.image,
       price: Number(finalPrice),
       type: purchaseType,
+      region: selectedRegion,
     });
 
     toast({
@@ -114,7 +111,7 @@ export default function ProductDetail() {
       <Header />
 
       <div className="mx-auto max-w-7xl px-6 py-14">
-        {/* SECTION 1 – BUY BOX */}
+        {/* SECTION 1 — BUY BOX */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           <div className="rounded-xl overflow-hidden border border-slate-800 bg-slate-900">
             <img
@@ -127,24 +124,45 @@ export default function ProductDetail() {
           <div className="space-y-6">
             <h1 className="text-3xl font-bold">{product.title}</h1>
 
-            {/* Type Selector */}
-            <div className="flex flex-wrap gap-3">
+            {/* Purchase Type Selector (Minimal Pills) */}
+            <div className="flex flex-wrap gap-2">
               {product.available_types.map((type) => (
-                <button
+                <PillButton
                   key={type}
-                  onClick={() => setPurchaseType(type)}
-                  className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm transition ${
-                    purchaseType === type
-                      ? "bg-purple-600 text-white"
-                      : "bg-slate-800 text-slate-300 hover:bg-slate-700"
-                  }`}
-                >
-                  {type === "key" && <Key size={14} />}
-                  {type === "offline_account" && <Laptop size={14} />}
-                  {type === "shared_account" && <Users size={14} />}
-                  {TYPE_CONFIG[type].label}
-                </button>
+                  active={purchaseType === type}
+                  onClick={() => {
+                    setPurchaseType(type);
+                    setSelectedRegion(TYPE_CONFIG[type].regions[0]);
+                  }}
+                  icon={
+                    type === "key" ? (
+                      <Key size={14} />
+                    ) : type === "offline_account" ? (
+                      <Laptop size={14} />
+                    ) : (
+                      <Users size={14} />
+                    )
+                  }
+                  label={TYPE_CONFIG[type].label}
+                />
               ))}
+            </div>
+
+            {/* Region Selector (Minimal Pills) */}
+            <div>
+              <p className="mb-2 text-sm text-slate-400 flex items-center gap-1">
+                <Globe size={14} /> Select region
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {typeConfig.regions.map((region) => (
+                  <PillButton
+                    key={region}
+                    active={selectedRegion === region}
+                    onClick={() => setSelectedRegion(region)}
+                    label={region}
+                  />
+                ))}
+              </div>
             </div>
 
             {/* Price + Actions */}
@@ -153,13 +171,14 @@ export default function ProductDetail() {
                 €{finalPrice}
               </span>
 
+              {/* BUY NOW — PURPLE */}
               <button
-                onClick={whatsappCheckout}
-                className="rounded-lg bg-green-600 px-6 py-3 font-medium hover:bg-green-500 transition"
+                className="rounded-lg bg-purple-600 px-6 py-3 font-medium hover:bg-purple-500 transition"
               >
                 Buy Now
               </button>
 
+              {/* ADD TO CART */}
               <button
                 onClick={handleAddToCart}
                 className="flex items-center gap-2 rounded-lg border border-slate-700 px-6 py-3 text-slate-300 hover:border-purple-500 hover:text-purple-400 transition"
@@ -169,16 +188,15 @@ export default function ProductDetail() {
               </button>
             </div>
 
-            {/* Region Warning */}
-            <div className="rounded-lg border border-yellow-500/30 bg-yellow-500/10 p-4 text-sm text-yellow-300 flex gap-2">
-              <Globe size={18} />
-              Available regions for this option:
-              <strong> {typeConfig.regions.join(", ")}</strong>
+            {/* Region Heads-Up */}
+            <div className="rounded-lg border border-yellow-500/30 bg-yellow-500/10 p-4 text-sm text-yellow-300">
+              ⚠️ This option works only in <strong>{selectedRegion}</strong>.
+              Make sure your account region matches.
             </div>
           </div>
         </div>
 
-        {/* SECTION 2 – DETAILS */}
+        {/* SECTION 2 — DETAILS */}
         <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-6">
           <DetailBox
             icon={<Info size={18} />}
@@ -198,20 +216,19 @@ export default function ProductDetail() {
             icon={<Globe size={18} />}
             title="Activation & Region"
             items={[
-              `Regions: ${typeConfig.regions.join(", ")}`,
+              `Region: ${selectedRegion}`,
               "VPN may be required",
               "Region mismatch not refundable",
             ]}
           />
         </div>
 
-        {/* SECTION 3 – ABOUT + SYSTEM REQUIREMENTS */}
+        {/* SECTION 3 — ABOUT + SYSTEM REQUIREMENTS */}
         <div className="mt-14 rounded-xl border border-slate-800 bg-slate-900 p-8 space-y-6">
           <h2 className="text-xl font-semibold">About the game</h2>
           <p className="text-slate-400 leading-relaxed">
             {product.title} delivers an immersive experience with rich gameplay,
-            deep progression systems, and high production quality. Choose the
-            purchase option that best fits your needs and region.
+            deep progression systems, and high production quality.
           </p>
 
           <div>
@@ -237,6 +254,32 @@ export default function ProductDetail() {
 }
 
 /* ========================= */
+
+function PillButton({
+  active,
+  onClick,
+  icon,
+  label,
+}: {
+  active: boolean;
+  onClick: () => void;
+  icon?: React.ReactNode;
+  label: string;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm transition ${
+        active
+          ? "bg-purple-600 text-white"
+          : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+      }`}
+    >
+      {icon}
+      {label}
+    </button>
+  );
+}
 
 function DetailBox({
   icon,
