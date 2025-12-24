@@ -1,7 +1,8 @@
-import { ShoppingCart, Star, ArrowRight } from "lucide-react";
+import { ShoppingCart, Star, Globe, Key, Users, Laptop } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCart } from "@/lib/CartContext";
 import { useState } from "react";
+import type { ProductType } from "@/lib/gameData";
 
 interface GameCardProps {
   id: string;
@@ -9,7 +10,8 @@ interface GameCardProps {
   image: string;
   price: number;
   rating?: number;
-  popularity?: number;
+  regions: string[];
+  available_types: ProductType[];
 }
 
 export default function GameCard({
@@ -18,7 +20,8 @@ export default function GameCard({
   image,
   price,
   rating,
-  popularity,
+  regions,
+  available_types,
 }: GameCardProps) {
   const { addToCart } = useCart();
   const [isAdded, setIsAdded] = useState(false);
@@ -32,80 +35,94 @@ export default function GameCard({
       price,
     });
     setIsAdded(true);
-    setTimeout(() => setIsAdded(false), 2000);
+    setTimeout(() => setIsAdded(false), 1500);
   };
 
   return (
     <Link to={`/product/${id}`}>
-      <div className="group h-full overflow-hidden rounded-lg border border-slate-700 bg-gradient-to-b from-slate-800 to-slate-900 transition-all duration-500 hover:shadow-2xl hover:border-purple-500 hover:shadow-purple-500/20 transform hover:-translate-y-2 cursor-pointer">
-        {/* Image Container */}
-        <div className="relative h-64 overflow-hidden bg-slate-900">
+      <div className="group h-full overflow-hidden rounded-xl border border-slate-800 bg-slate-900 transition hover:border-purple-500 hover:shadow-lg hover:shadow-purple-500/20">
+        {/* Image */}
+        <div className="relative h-60 bg-slate-800 overflow-hidden">
           <img
             src={image}
             alt={title}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-          <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-            <ArrowRight className="h-10 w-10 text-purple-400 transform -translate-x-2 group-hover:translate-x-0 transition-transform duration-300" />
+
+          {/* Type badges */}
+          <div className="absolute top-3 left-3 flex gap-1">
+            {available_types.includes("key") && (
+              <Badge icon={<Key size={12} />} label="KEY" />
+            )}
+            {available_types.includes("offline_account") && (
+              <Badge icon={<Laptop size={12} />} label="OFFLINE" />
+            )}
+            {available_types.includes("shared_account") && (
+              <Badge icon={<Users size={12} />} label="SHARED" />
+            )}
           </div>
         </div>
 
-        {/* Content Container */}
+        {/* Content */}
         <div className="flex flex-col gap-3 p-4">
-          {/* Title */}
-          <h3 className="line-clamp-2 text-sm font-semibold text-slate-100 group-hover:text-purple-300 transition-colors">
+          <h3 className="line-clamp-2 text-sm font-semibold text-slate-100">
             {title}
           </h3>
 
-          {/* Rating and Stats */}
-          <div className="flex items-center gap-3">
+          {/* Rating + Regions */}
+          <div className="flex items-center justify-between text-xs text-slate-400">
             {rating && (
               <div className="flex items-center gap-1">
-                <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                <span className="text-xs text-slate-400">{rating.toFixed(1)}</span>
+                <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
+                {rating.toFixed(1)}
               </div>
             )}
-            {popularity && (
-              <span
-                className={`inline-block rounded-full px-2 py-1 text-xs font-medium ${
-                  popularity > 75
-                    ? "bg-purple-900/50 text-purple-300"
-                    : popularity > 50
-                      ? "bg-blue-900/50 text-blue-300"
-                      : "bg-slate-700/50 text-slate-300"
-                }`}
-              >
-                {popularity > 75
-                  ? "Popular"
-                  : popularity > 50
-                    ? "Trending"
-                    : "New"}
-              </span>
-            )}
+
+            <div className="flex items-center gap-1">
+              <Globe className="h-3.5 w-3.5" />
+              {regions.includes("Global") ? "Global" : regions.join(", ")}
+            </div>
           </div>
 
-          {/* Price and Action */}
-          <div className="flex items-center justify-between border-t border-slate-700 pt-3">
-            <div className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+          {/* Price + CTA */}
+          <div className="mt-2 flex items-center justify-between border-t border-slate-800 pt-3">
+            <span className="text-lg font-bold text-purple-400">
               ${price.toFixed(2)}
-            </div>
+            </span>
+
             <button
               onClick={handleAddToCart}
-              className={`flex items-center gap-2 rounded-lg px-3 py-2 text-white text-xs font-medium transition-all duration-300 transform active:scale-95 ${
+              className={`flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium transition ${
                 isAdded
-                  ? "bg-green-600 shadow-lg shadow-green-600/50"
-                  : "bg-gradient-to-r from-purple-600 to-pink-600 hover:shadow-lg hover:shadow-purple-600/50 hover:scale-105"
+                  ? "bg-green-600 text-white"
+                  : "bg-purple-600 hover:bg-purple-500 text-white"
               }`}
             >
               <ShoppingCart className="h-4 w-4" />
-              <span className="hidden sm:inline">
-                {isAdded ? "Added!" : "Add"}
-              </span>
+              {isAdded ? "Added" : "Add"}
             </button>
           </div>
         </div>
       </div>
     </Link>
+  );
+}
+
+/* =========================
+   Badge Component
+========================= */
+
+function Badge({
+  icon,
+  label,
+}: {
+  icon: React.ReactNode;
+  label: string;
+}) {
+  return (
+    <span className="flex items-center gap-1 rounded-md bg-black/70 px-2 py-1 text-[10px] font-semibold text-white backdrop-blur">
+      {icon}
+      {label}
+    </span>
   );
 }
