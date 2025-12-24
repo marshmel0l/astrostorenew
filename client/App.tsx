@@ -19,7 +19,7 @@ import Cart from "./pages/Cart";
 import NotFound from "./pages/NotFound";
 import Login from "@/pages/Login";
 
-import Account from "@/pages/Account";
+import Account from "@/pages/account/Account";
 import AccountProducts from "@/pages/account/Products";
 import AccountOrders from "@/pages/account/Orders";
 import AccountReviews from "@/pages/account/Reviews";
