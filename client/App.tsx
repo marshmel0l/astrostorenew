@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { WishlistProvider } from "@/lib/WishlistContext";
+import Wishlist from "@/pages/Wishlist";
 
 import { CartProvider } from "@/lib/CartContext";
 import Layout from "@/components/Layout";
@@ -51,7 +52,7 @@ const App = () => (
               </Route>
 
               {/* CATCH-ALL */}
-              
+              <Route path="/wishlist" element={<Wishlist />} />
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>
