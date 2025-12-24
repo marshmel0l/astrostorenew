@@ -12,7 +12,7 @@ export default function RequireAdmin({ children }: RequireAdminProps) {
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
 
   useEffect(() => {
-    let isMounted = true;
+    let mounted = true;
 
     const checkAdmin = async () => {
       const {
@@ -20,7 +20,7 @@ export default function RequireAdmin({ children }: RequireAdminProps) {
       } = await supabase.auth.getUser();
 
       if (!user) {
-        if (isMounted) {
+        if (mounted) {
           setIsAdmin(false);
           setLoading(false);
         }
@@ -33,7 +33,7 @@ export default function RequireAdmin({ children }: RequireAdminProps) {
         .eq("id", user.id)
         .single();
 
-      if (isMounted) {
+      if (mounted) {
         setIsAdmin(!error && data?.role === "admin");
         setLoading(false);
       }
@@ -42,9 +42,15 @@ export default function RequireAdmin({ children }: RequireAdminProps) {
     checkAdmin();
 
     return () => {
-      isMounted = false;
+      mounted = false;
     };
   }, []);
 
-  if (loading) {
-    return null; // later we can replace
+  if (loading) return null;
+
+  if (!isAdmin) {
+    return <Navigate to="/login" replace state={{ from: location }} />;
+  }
+
+  return children;
+}
