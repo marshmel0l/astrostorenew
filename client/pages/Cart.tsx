@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import Header from "@/components/Header";
 import {
   ChevronLeft,
   X,
@@ -47,7 +46,6 @@ export default function Cart() {
   if (items.length === 0) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-slate-950 to-slate-900">
-        <Header />
         <div className="flex items-center justify-center py-32">
           <div className="text-center animate-fade-in">
             <ShoppingBag className="h-24 w-24 text-slate-600 mx-auto mb-6" />
@@ -71,8 +69,6 @@ export default function Cart() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-950 to-slate-900">
-      <Header />
-
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
         {/* Back Button */}
         <button

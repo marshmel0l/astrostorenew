@@ -3,60 +3,19 @@ import { useEffect, useState } from "react";
 import { useWishlist } from "@/lib/WishlistContext";
 import { useCart } from "@/lib/CartContext";
 import { fetchGames, type Game, type ProductType } from "@/lib/gameData";
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import {
   ShoppingCart,
-  Globe,
-  Key,
-  Laptop,
-  Users,
-  ShieldCheck,
-  Info,
-  Cpu,
   Heart,
+  Check,
 } from "lucide-react";
 
-type TypeConfig = {
-  label: string;
-  priceMultiplier: number;
-  description: string[];
-  requiresRegion?: boolean;
-  regions?: string[];
-};
+/* ================= TYPES ================= */
 
-const TYPE_CONFIG: Record<ProductType, TypeConfig> = {
-  key: {
-    label: "Game Key",
-    priceMultiplier: 1,
-    requiresRegion: true,
-    regions: ["Global", "EU", "US"],
-    description: [
-      "Official activation key",
-      "Permanent ownership",
-      "May require VPN",
-    ],
-  },
-  offline_account: {
-    label: "Offline Account",
-    priceMultiplier: 0.8,
-    description: [
-      "Play in offline mode",
-      "Unlimited access",
-      "No email or password changes",
-      "Login from anywhere",
-    ],
-  },
-  shared_account: {
-    label: "Shared Account",
-    priceMultiplier: 0.65,
-    description: [
-      "Play from provided account",
-      "Online & offline access",
-      "Shared usage",
-      "Login from anywhere",
-    ],
-  },
-};
+type MainType = "key" | "account";
+type AccountType = "offline" | "full" | "shared";
+
+/* ================= PAGE ================= */
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -64,23 +23,48 @@ export default function ProductDetail() {
   const { toggle, has } = useWishlist();
 
   const [product, setProduct] = useState<Game | null>(null);
-  const [purchaseType, setPurchaseType] = useState<ProductType | null>(null);
-  const [region, setRegion] = useState<string>("Global");
+
+  const [mainType, setMainType] = useState<MainType>("key");
+  const [accountType, setAccountType] = useState<AccountType>("offline");
+  const [platform] = useState("PC (WW)");
+  const [region, setRegion] = useState("Global");
+  const [edition, setEdition] = useState("Standard");
+
+  /* ================= LOAD ================= */
 
   useEffect(() => {
     fetchGames().then((games) => {
       const found = games.find((g) => g.id === id) || null;
       setProduct(found);
-      if (found) setPurchaseType(found.available_types[0]);
     });
   }, [id]);
 
-  if (!product || !purchaseType) return null;
+  /* ================= LOADING ================= */
 
-  const config = TYPE_CONFIG[purchaseType];
-  const finalPrice = (
-    product.price * config.priceMultiplier
-  ).toFixed(2);
+  if (!product) {
+    return (
+      <div className="mx-auto max-w-7xl px-6 py-20">
+        <div className="h-[500px] rounded-xl bg-slate-800/40 animate-pulse" />
+      </div>
+    );
+  }
+
+  /* ================= PRICE ================= */
+
+  const basePrice = product.price;
+
+  const priceMultiplier =
+    mainType === "key"
+      ? 1
+      : accountType === "offline"
+      ? 0.7
+      : accountType === "shared"
+      ? 0.6
+      : 0.85;
+
+  const finalPrice = (basePrice * priceMultiplier).toFixed(2);
+
+  /* ================= CART ================= */
 
   const handleAddToCart = () => {
     addToCart({
@@ -88,195 +72,264 @@ export default function ProductDetail() {
       title: product.title,
       image: product.image,
       price: Number(finalPrice),
-      type: purchaseType,
-      region: config.requiresRegion ? region : "N/A",
+      type:
+        mainType === "key"
+          ? "key"
+          : (`${accountType}_account` as ProductType),
+      region: mainType === "key" ? region : "Any",
     });
 
-    toast({
-      title: "Added to cart",
-      description: product.title,
-    });
+toast.success("Added to cart", {
+  description: product.title,
+  duration: 2500,
+});
+
+
   };
 
+  /* ================= UI ================= */
+
   return (
-    <div className="mx-auto max-w-7xl px-6 py-14">
-      {/* TOP */}
-      <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
-        <div className="overflow-hidden rounded-xl border border-slate-800 bg-slate-900">
-          <img
-            src={product.image}
-            alt={product.title}
-            className="h-full w-full object-cover"
-          />
-        </div>
+    <div className="relative min-h-screen text-slate-100">
+      {/* BACKGROUND */}
+      <div
+        className="absolute inset-0 -z-10"
+        style={{
+          backgroundImage: `url(${product.image})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <div className="absolute inset-0 backdrop-blur-2xl bg-slate-950/80" />
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/60 via-slate-950/90 to-slate-950" />
+      </div>
 
-        <div className="space-y-6">
-          <div className="flex items-start justify-between">
-            <h1 className="text-3xl font-bold">{product.title}</h1>
-
-            <button
-              onClick={() =>
-                toggle({
-                  id: product.id,
-                  title: product.title,
-                  image: product.image,
-                })
-              }
-              className="flex items-center gap-2 text-sm text-slate-400 hover:text-pink-400 transition"
-            >
-              <Heart
-                size={18}
-                fill={has(product.id) ? "currentColor" : "none"}
-              />
-              {has(product.id) ? "Saved" : "Save"}
-            </button>
+      <div className="mx-auto max-w-7xl px-6 py-14 space-y-12">
+        {/* ================= TOP ================= */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+          {/* IMAGE */}
+          <div className="rounded-xl overflow-hidden border border-slate-800 bg-slate-900">
+            <img
+              src={product.image}
+              alt={product.title}
+              className="w-full h-full object-cover"
+            />
           </div>
 
-          {/* TYPE SELECTOR */}
-          <div className="flex flex-wrap gap-2">
-            {product.available_types.map((type) => (
-              <PillButton
-                key={type}
-                active={purchaseType === type}
-                onClick={() => setPurchaseType(type)}
-                icon={
-                  type === "key" ? (
-                    <Key size={14} />
-                  ) : type === "offline_account" ? (
-                    <Laptop size={14} />
-                  ) : (
-                    <Users size={14} />
-                  )
+          {/* RIGHT */}
+          <div className="space-y-6">
+            {/* TITLE */}
+            <div className="flex justify-between items-start">
+              <h1 className="text-3xl font-bold">{product.title}</h1>
+              <button
+                onClick={() =>
+                  toggle({
+                    id: product.id,
+                    title: product.title,
+                    image: product.image,
+                  })
                 }
-                label={TYPE_CONFIG[type].label}
-              />
-            ))}
-          </div>
+                className="text-slate-400 hover:text-pink-400 transition"
+              >
+                <Heart
+                  size={20}
+                  fill={has(product.id) ? "currentColor" : "none"}
+                />
+              </button>
+            </div>
 
-          {/* REGION — ONLY FOR KEYS */}
-          {config.requiresRegion && (
-            <div>
-              <p className="mb-2 flex items-center gap-1 text-sm text-slate-400">
-                <Globe size={14} /> Select region
-              </p>
-              <div className="flex gap-2">
-                {config.regions!.map((r) => (
-                  <PillButton
+            {/* TYPE */}
+            <SelectorRow label="Type">
+              <SelectorButton
+                active={mainType === "key"}
+                onClick={() => setMainType("key")}
+                label="Key"
+              />
+              <SelectorButton
+                active={mainType === "account"}
+                onClick={() => setMainType("account")}
+                label="Account"
+              />
+            </SelectorRow>
+
+            {/* PLATFORM */}
+            <SelectorRow label="Platform">
+              <SelectorButton active label={platform} />
+            </SelectorRow>
+
+            {/* REGION */}
+            {mainType === "key" && (
+              <SelectorRow label="Region">
+                {["Global", "EU", "US"].map((r) => (
+                  <SelectorButton
                     key={r}
                     active={region === r}
                     onClick={() => setRegion(r)}
                     label={r}
                   />
                 ))}
+              </SelectorRow>
+            )}
+
+            {/* EDITION */}
+            <SelectorRow label="Edition">
+              {["Standard", "Deluxe"].map((e) => (
+                <SelectorButton
+                  key={e}
+                  active={edition === e}
+                  onClick={() => setEdition(e)}
+                  label={e}
+                />
+              ))}
+            </SelectorRow>
+
+            {/* ACCOUNT TYPE */}
+            {mainType === "account" && (
+              <SelectorRow label="Account Type">
+                <SelectorButton
+                  active={accountType === "offline"}
+                  onClick={() => setAccountType("offline")}
+                  label="Offline"
+                />
+                <SelectorButton
+                  active={accountType === "full"}
+                  onClick={() => setAccountType("full")}
+                  label="Full Access"
+                />
+                <SelectorButton
+                  active={accountType === "shared"}
+                  onClick={() => setAccountType("shared")}
+                  label="Shared"
+                />
+              </SelectorRow>
+            )}
+
+            {/* PRICE */}
+            <div className="space-y-2">
+              <div className="text-3xl font-bold text-purple-400">
+                €{finalPrice}
+              </div>
+
+              <div className="flex gap-4">
+                <button className="bg-purple-600 px-6 py-3 rounded-lg font-medium hover:bg-purple-500 transition">
+                  Buy Now
+                </button>
+
+                <button
+                  onClick={handleAddToCart}
+                  className="flex items-center gap-2 px-6 py-3 rounded-lg border border-slate-700 hover:border-purple-500 transition"
+                >
+                  <ShoppingCart size={18} />
+                  Add to Cart
+                </button>
               </div>
             </div>
-          )}
 
-          {/* PRICE */}
-          <div className="flex items-center gap-4">
-            <span className="text-3xl font-bold text-purple-400">
-              €{finalPrice}
-            </span>
-
-            <button className="rounded-lg bg-purple-600 px-6 py-3 font-medium hover:bg-purple-500 transition">
-              Buy Now
-            </button>
-
-            <button
-              onClick={handleAddToCart}
-              className="flex items-center gap-2 rounded-lg border border-slate-700 px-6 py-3 text-slate-300 hover:border-purple-500 hover:text-purple-400 transition"
-            >
-              <ShoppingCart size={18} />
-              Add to Cart
-            </button>
-          </div>
-
-          {/* CONDITIONS */}
-          <div className="rounded-lg border border-slate-800 bg-slate-900 p-4 text-sm text-slate-400">
-            <ul className="space-y-1">
-              {config.description.map((d) => (
-                <li key={d}>• {d}</li>
-              ))}
-            </ul>
+            {/* INFO */}
+            <div className="grid grid-cols-2 gap-3 text-sm text-slate-300">
+              <InfoItem text="In stock" />
+              <InfoItem text="Instant delivery" />
+              <InfoItem
+                text={mainType === "key" ? "Digital key" : "Account access"}
+              />
+              <InfoItem text="Login from anywhere" />
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* DETAILS */}
-      <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
-        <DetailBox
-          icon={<Info size={18} />}
-          title="What you get"
-          items={config.description}
-        />
-        <DetailBox
-          icon={<ShieldCheck size={18} />}
-          title="Guarantees"
-          items={[
-            "Instant delivery",
-            "Replacement if invalid",
-            "Support included",
-          ]}
-        />
-        <DetailBox
-          icon={<Cpu size={18} />}
-          title="System Requirements"
-          items={[
-            "OS: Windows 10 (64-bit)",
-            "CPU: Intel i5 / Ryzen 5",
-            "RAM: 8 GB",
-            "GPU: GTX 1060 / RX 580",
-            "Storage: 70 GB",
-          ]}
-        />
+        {/* ABOUT */}
+        <section className="space-y-4">
+          <h2 className="text-xl font-semibold">About the game</h2>
+          <p className="text-slate-300 max-w-4xl">
+            Dummy content for now. Full description will come from admin panel.
+          </p>
+        </section>
+
+        {/* SYSTEM */}
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <DetailBox
+            title="Minimum"
+            items={[
+              "Windows 10 (64-bit)",
+              "Intel i5 / Ryzen 5",
+              "8 GB RAM",
+              "GTX 1060 / RX 580",
+            ]}
+          />
+          <DetailBox
+            title="Recommended"
+            items={[
+              "Windows 10 (64-bit)",
+              "Intel i7 / Ryzen 7",
+              "16 GB RAM",
+              "RTX 2060 / RX 5700",
+            ]}
+          />
+        </section>
       </div>
     </div>
   );
 }
 
-/* UI */
+/* ================= COMPONENTS ================= */
 
-function PillButton({
+function SelectorRow({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="space-y-2">
+      <p className="text-xs text-slate-400">{label}</p>
+      <div className="flex flex-wrap gap-2">{children}</div>
+    </div>
+  );
+}
+
+function SelectorButton({
   active,
   onClick,
-  icon,
   label,
 }: {
-  active: boolean;
-  onClick: () => void;
-  icon?: React.ReactNode;
+  active?: boolean;
+  onClick?: () => void;
   label: string;
 }) {
   return (
     <button
       onClick={onClick}
-      className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm transition ${
+      className={`rounded-lg px-4 py-2 text-sm transition ${
         active
           ? "bg-purple-600 text-white"
           : "bg-slate-800 text-slate-300 hover:bg-slate-700"
       }`}
     >
-      {icon}
       {label}
     </button>
   );
 }
 
+function InfoItem({ text }: { text: string }) {
+  return (
+    <div className="flex items-center gap-2">
+      <Check size={14} className="text-green-400" />
+      <span>{text}</span>
+    </div>
+  );
+}
+
 function DetailBox({
-  icon,
   title,
   items,
 }: {
-  icon: React.ReactNode;
   title: string;
   items: string[];
 }) {
   return (
     <div className="rounded-xl border border-slate-800 bg-slate-900 p-5">
-      <div className="mb-3 flex items-center gap-2 text-sm font-semibold">
-        {icon}
-        {title}
-      </div>
+      <h3 className="mb-3 font-semibold">{title}</h3>
       <ul className="space-y-1 text-sm text-slate-400">
         {items.map((i) => (
           <li key={i}>• {i}</li>

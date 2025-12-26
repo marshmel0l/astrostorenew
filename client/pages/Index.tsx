@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import GameCard from "@/components/GameCard";
+import HeroCarousel from "@/components/HeroCarousel";
 import { fetchGames, searchGames, sortGames, type Game } from "@/lib/gameData";
 
 export default function Index() {
@@ -12,6 +13,8 @@ export default function Index() {
   >("popularity");
   const [isLoading, setIsLoading] = useState(true);
 
+  /* ================= LOAD DATA ================= */
+
   useEffect(() => {
     const load = async () => {
       setIsLoading(true);
@@ -22,6 +25,8 @@ export default function Index() {
     };
     load();
   }, []);
+
+  /* ================= FILTER / SORT ================= */
 
   useEffect(() => {
     let result = games;
@@ -36,36 +41,10 @@ export default function Index() {
 
   return (
     <>
-      {/* HERO */}
-      <section className="border-b border-slate-800">
-        <div className="mx-auto max-w-7xl px-6 py-20">
-          <h1 className="text-4xl font-bold sm:text-5xl">
-            Buy Games Smarter.
-            <br />
-            <span className="text-purple-400">
-              Lifetime Access, Better Prices.
-            </span>
-          </h1>
+      {/* ================= HERO CAROUSEL ================= */}
+      <HeroCarousel />
 
-          <p className="mt-4 max-w-2xl text-slate-400">
-            Digital PC games with keys, offline accounts, and shared access.
-            Secure delivery. Clear rules.
-          </p>
-
-          <button
-            onClick={() =>
-              document
-                .getElementById("games")
-                ?.scrollIntoView({ behavior: "smooth" })
-            }
-            className="mt-8 rounded-lg bg-purple-600 px-6 py-3 font-medium hover:bg-purple-500 transition"
-          >
-            Browse Games
-          </button>
-        </div>
-      </section>
-
-      {/* GAMES */}
+      {/* ================= GAMES ================= */}
       <section id="games" className="mx-auto max-w-7xl px-6 py-14">
         {/* TOOLBAR */}
         <div className="mb-8 flex items-center justify-between">
