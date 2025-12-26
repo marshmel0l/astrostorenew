@@ -1,103 +1,19 @@
 /** @import must precede all other statements */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
-@keyframes softScale {
-  from {
-    opacity: 0;
-    transform: scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.animate-fade-up {
-  animation: fadeUp 0.45s ease-out both;
-}
-
-.animate-soft-scale {
-  animation: softScale 0.35s ease-out both;
-}
-
-@keyframes slide-down {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-slide-down {
-  animation: slide-down 0.4s ease-out;
-}
-@keyframes pageFade {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-page-fade {
-  animation: pageFade 0.35s ease-out;
-}
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes softScale {
-  from {
-    opacity: 0;
-    transform: scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.animate-fade-up {
-  animation: fadeUp 0.45s ease-out both;
-}
-
-.animate-soft-scale {
-  animation: softScale 0.35s ease-out both;
-}
+/* =====================
+   TAILWIND
+===================== */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* =====================
+   ROOT THEME
+===================== */
+
 @layer base {
-  /**
-   * Tailwind CSS theme - Default to Dark Mode
-   * tailwind.config.ts expects the following color variables to be expressed as HSL values.
-   * A different format will require also updating the theme in tailwind.config.ts.
-  */
   :root {
     --background: 222 20% 8%;
     --foreground: 210 40% 98%;
@@ -128,72 +44,8 @@
     --ring: 263 100% 65%;
 
     --radius: 0.5rem;
-
-    --sidebar-background: 222 20% 12%;
-
-    --sidebar-foreground: 210 40% 98%;
-
-    --sidebar-primary: 263 100% 65%;
-
-    --sidebar-primary-foreground: 222 20% 8%;
-
-    --sidebar-accent: 300 100% 62%;
-
-    --sidebar-accent-foreground: 222 20% 8%;
-
-    --sidebar-border: 220 15% 22%;
-
-    --sidebar-ring: 263 100% 65%;
   }
 
-  .light {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-}
-
-@layer base {
   * {
     @apply border-border;
     font-family: "Inter", system-ui, sans-serif;
@@ -201,80 +53,259 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: "Inter", system-ui, sans-serif;
-  }
-
-  :where(p, span, li, h1, h2, h3, h4, h5, h6, a, button, label, td, th) {
-    overflow-wrap: anywhere;
-    word-break: break-word;
-  }
-
-  pre,
-  code {
-    overflow-x: auto;
-    white-space: pre;
   }
 }
 
-@layer utilities {
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+/* =====================
+   PAGE TRANSITION
+===================== */
 
-  @keyframes slideInFromLeft {
-    from {
-      opacity: 0;
-      transform: translateX(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-  @keyframes slideInFromRight {
-    from {
-      opacity: 0;
-      transform: translateX(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
+.page-enter {
+  animation: pageEnter 0.35s ease-out both;
+}
 
-  @keyframes pulse-glow {
-    0% {
-      box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.7);
-    }
-    70% {
-      box-shadow: 0 0 0 10px rgba(168, 85, 247, 0);
-    }
-    100% {
-      box-shadow: 0 0 0 0 rgba(168, 85, 247, 0);
-    }
-  }
+/* =====================
+   FADE / SLIDE ANIMS
+===================== */
 
-  .animate-fade-in {
-    animation: fadeIn 0.5s ease-out;
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-  .animate-slide-in-left {
-    animation: slideInFromLeft 0.5s ease-out;
-  }
+.animate-fade-up {
+  animation: fadeUp 0.45s ease-out both;
+}
 
-  .animate-slide-in-right {
-    animation: slideInFromRight 0.5s ease-out;
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-  .animate-pulse-glow {
-    animation: pulse-glow 2s infinite;
+.animate-slide-down {
+  animation: slideDown 0.4s ease-out;
+}
+
+/* =====================
+   BUTTONS – CONSISTENT
+===================== */
+
+/* Primary (purple) */
+.btn-primary,
+button.bg-purple-600,
+a.bg-purple-600 {
+  transition:
+    background-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.btn-primary:hover,
+button.bg-purple-600:hover,
+a.bg-purple-600:hover {
+  transform: translateY(-1px);
+}
+
+.btn-primary:active,
+button.bg-purple-600:active,
+a.bg-purple-600:active {
+  transform: scale(0.97);
+}
+
+/* Outline / bordered buttons */
+.btn-secondary,
+button.border,
+a.border {
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.btn-secondary:hover,
+button.border:hover,
+a.border:hover {
+  background-color: rgba(255, 255, 255, 0.04);
+  transform: translateY(-1px);
+}
+
+.btn-secondary:active,
+button.border:active,
+a.border:active {
+  transform: scale(0.97);
+}
+
+/* =====================
+   IMAGE LOADING
+===================== */
+
+.img-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.img-spinner {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(15, 23, 42, 0.6);
+  z-index: 2;
+}
+
+.img-spinner::after {
+  content: "";
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 3px solid rgba(124, 58, 237, 0.3);
+  border-top-color: rgb(124 58 237);
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
+}
+
+.img-fade {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.img-fade.loaded {
+  opacity: 1;
+}
+/* ===============================
+   HERO CAROUSEL — CLEAN
+================================ */
+
+.hero-carousel {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.hero-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===============================
+   CAROUSEL ARROWS
+================================ */
+
+.carousel-edge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 70px;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  z-index: 10;
+}
+
+.carousel-edge.left {
+  left: 0;
+  justify-content: flex-start;
+}
+
+.carousel-edge.right {
+  right: 0;
+  justify-content: flex-end;
+}
+
+.carousel-edge:hover {
+  opacity: 1;
+}
+
+.carousel-arrow {
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  opacity: 0.7;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.carousel-arrow:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* =====================
+   CART TOAST (BLUR)
+===================== */
+
+[data-sonner-toast] {
+  backdrop-filter: blur(14px);
+  background: rgba(15, 23, 42, 0.75) !important;
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  color: #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+}
+
+[data-sonner-toast]::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  background: linear-gradient(90deg, #a855f7, #ec4899);
+  animation: toast-progress 2.5s linear forwards;
+}
+
+@keyframes toast-progress {
+  from {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  to {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+}
+.carousel-arrow {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(8px);
+  color: white;
+  font-size: 28px;
+  display: grid;
+  place-items: center;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.carousel-arrow:hover {
+  transform: scale(1.08);
 }

@@ -1,12 +1,18 @@
 import React, { createContext, useContext, useState } from "react";
 
-export interface CartItem {
+export type CartItem = {
   id: string;
   title: string;
-  price: number;
   image: string;
+  price: number;
   quantity: number;
-}
+
+  // ✅ REQUIRED FOR YOUR STORE LOGIC
+  type: "key" | "offline_account" | "full_account" | "shared_account";
+  region: string;
+  platform?: string;
+  edition?: string;
+};
 
 interface CartContextType {
   items: CartItem[];

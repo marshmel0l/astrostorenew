@@ -1,4 +1,7 @@
+
+
 import "./global.css";
+import { useEffect } from "react";
 
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -9,6 +12,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 
 import { CartProvider } from "@/lib/CartContext";
 import { WishlistProvider } from "@/lib/WishlistContext";
+import ScrollToTop from "@/components/ScrollToTop";
 
 import Layout from "@/components/Layout";
 
@@ -35,6 +39,7 @@ const App = () => (
           <Sonner />
 
           <BrowserRouter>
+            <ScrollToTop />
             <Routes>
               <Route element={<Layout />}>
                 {/* PUBLIC */}
@@ -64,3 +69,16 @@ const App = () => (
 );
 
 createRoot(document.getElementById("root")!).render(<App />);
+useEffect(() => {
+  const disable = (e: Event) => e.preventDefault();
+
+  document.addEventListener("contextmenu", disable);
+  document.addEventListener("dragstart", disable);
+  document.addEventListener("selectstart", disable);
+
+  return () => {
+    document.removeEventListener("contextmenu", disable);
+    document.removeEventListener("dragstart", disable);
+    document.removeEventListener("selectstart", disable);
+  };
+}, []);

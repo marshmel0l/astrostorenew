@@ -23,6 +23,7 @@ export default function GameCard({
   const { addToCart } = useCart();
   const { toggle, has } = useWishlist();
   const [isAdded, setIsAdded] = useState(false);
+const [loaded, setLoaded] = useState(false);
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -33,14 +34,19 @@ export default function GameCard({
 
   return (
     <Link to={`/product/${id}`} className="animate-fade-up">
-      <div className="group h-full overflow-hidden rounded-xl border border-slate-800 bg-slate-900 transition-all duration-300 hover:-translate-y-1 hover:border-purple-500 hover:shadow-xl hover:shadow-purple-600/20">
+<div className="group card-hover h-full overflow-hidden rounded-lg border border-slate-700 bg-gradient-to-b from-slate-800 to-slate-900">
         {/* IMAGE */}
-        <div className="relative h-64 overflow-hidden">
-          <img
-            src={image}
-            alt={title}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-          />
+<div className="relative h-64 img-wrapper">
+  {!loaded && <div className="img-spinner" />}
+
+  <img
+    src={image}
+    alt={title}
+    onLoad={() => setLoaded(true)}
+    className={`h-full w-full object-cover img-fade ${
+      loaded ? "loaded" : ""
+    }`}
+  />
 
           {/* Wishlist */}
           <button
