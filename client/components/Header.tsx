@@ -1,11 +1,5 @@
-import { Link } from "react-router-dom";
-import {
-  ShoppingCart,
-  Rocket,
-  User,
-  Heart,
-  Globe,
-} from "lucide-react";
+import { Link, NavLink } from "react-router-dom";
+import { ShoppingCart, User, Heart, Globe, X, Search } from "lucide-react";
 import { useCart } from "@/lib/CartContext";
 import { useWishlist } from "@/lib/WishlistContext";
 import { supabase } from "@/lib/supabase";
@@ -13,29 +7,55 @@ import { useEffect, useState } from "react";
 
 type Currency = "USD" | "EUR" | "EGP";
 
+const PROMO_KEY = "astro_promo_hidden_at";
+
 export default function Header() {
   const { getTotalItems } = useCart();
-  const { items } = useWishlist();
+  const { items: wishlistItems } = useWishlist();
   const cartCount = getTotalItems();
 
   const [user, setUser] = useState<any>(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [currency, setCurrency] = useState<Currency>(
-    (localStorage.getItem("currency") as Currency) || "EUR"
+    (localStorage.getItem("currency") as Currency) || "EUR",
   );
 
+  const [showPromo, setShowPromo] = useState(true);
+
+  // promo bar 7‑day reset
+  useEffect(() => {
+    const raw = localStorage.getItem(PROMO_KEY);
+    if (!raw) {
+      setShowPromo(true);
+      return;
+    }
+    const hiddenAt = Number(raw);
+    if (Number.isNaN(hiddenAt)) {
+      setShowPromo(true);
+      return;
+    }
+    const sevenDays = 7 * 24 * 60 * 60 * 1000;
+    const expired = Date.now() - hiddenAt > sevenDays;
+    setShowPromo(expired);
+    if (expired) localStorage.removeItem(PROMO_KEY);
+  }, []);
+
+  const closePromo = () => {
+    setShowPromo(false);
+    localStorage.setItem(PROMO_KEY, String(Date.now()));
+  };
+
+  // auth + currency
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
       setUser(data.user);
       setAuthLoading(false);
     });
 
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      (_e, session) => {
-        setUser(session?.user ?? null);
-        setAuthLoading(false);
-      }
-    );
+    const { data: listener } = supabase.auth.onAuthStateChange((_e, session) => {
+      setUser(session?.user ?? null);
+      setAuthLoading(false);
+    });
 
     return () => listener.subscription.unsubscribe();
   }, []);
@@ -46,71 +66,111 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/80 backdrop-blur-xl">
-      <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-            <Rocket className="text-white" />
+    <header className="bg-[#111827]">
+      {/* GREEN PROMO STRIP */}
+      {showPromo && (
+        <div className="bg-emerald-800 text-[11px] text-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-9 flex items-center justify-between gap-4">
+            <p className="font-medium tracking-wide text-center flex-1">
+              SHOP THE ASTROSTORE SALE! 💸 UP TO 80% OFF GAMES, MEMBERSHIPS, TOP‑UPS AND MORE!
+            </p>
+            <button
+              onClick={closePromo}
+              className="flex items-center justify-center w-6 h-6 rounded-full hover:bg-emerald-700/80 transition-colors"
+              aria-label="Close promotion"
+            >
+              <X className="w-4 h-4" />
+            </button>
           </div>
-          <div>
-            <div className="font-bold text-white">Astro</div>
-            <div className="text-xs text-purple-400 tracking-widest">
-              STORE
+        </div>
+      )}
+
+      {/* MAIN ROW LIKE SCREENSHOT */}
+      <div className="bg-[#111827]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center gap-4">
+          {/* Logo + tagline left */}
+          <Link to="/" className="flex items-center gap-3 mr-4">
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-purple-600 text-white text-lg font-bold">
+              A
+            </span>
+            <div className="hidden sm:flex flex-col">
+              <span className="text-sm font-semibold text-white">AstroStore</span>
+              <span className="text-[11px] text-slate-300 tracking-wide">
+                PAY LESS. GAME MORE.
+              </span>
+            </div>
+          </Link>
+
+          {/* Center search bar */}
+          <div className="flex-1">
+            <div className="relative max-w-3xl mx-auto">
+              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                placeholder="Search by title..."
+                className="w-full h-10 rounded-full bg-black/70 border border-slate-800 pl-9 pr-4 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/40"
+              />
             </div>
           </div>
-        </Link>
 
-        <div className="flex items-center gap-3">
-          <Link
-            to="/wishlist"
-            className="relative p-2 hover:bg-slate-800 rounded-lg"
-          >
-            <Heart className="h-5 w-5 text-pink-400" />
-            {items.length > 0 && (
-              <span className="absolute -top-1 -right-1 bg-pink-600 text-white text-[10px] h-4 w-4 rounded-full flex items-center justify-center">
-                {items.length}
-              </span>
-            )}
-          </Link>
+          {/* Right language / currency / icons */}
+          <div className="flex items-center gap-4">
+            {/* Language (static for now) */}
+            <button className="hidden sm:inline-flex items-center gap-1 text-xs text-slate-200 hover:text-white">
+              ENG
+              <span className="text-[9px]">▾</span>
+            </button>
 
-          <div className="flex rounded-full border border-slate-700 bg-slate-900">
-            {(["USD", "EUR", "EGP"] as Currency[]).map((c) => (
+            {/* Currency dropdown like screenshot */}
+            <div className="hidden sm:flex items-center gap-1 text-xs text-slate-200">
               <button
-                key={c}
-                onClick={() => changeCurrency(c)}
-                className={`px-3 py-1 text-xs ${
-                  currency === c
-                    ? "bg-purple-600 text-white rounded-full"
-                    : "text-slate-400"
+                onClick={() => changeCurrency("EUR")}
+                className={`flex items-center gap-1 hover:text-white ${
+                  currency === "EUR" ? "text-emerald-400 font-semibold" : ""
                 }`}
               >
-                {c}
+                EUR
+                <span className="text-[9px]">▾</span>
               </button>
-            ))}
+            </div>
+
+            {/* Wishlist */}
+            <Link
+              to="/wishlist"
+              className="relative text-slate-200 hover:text-white"
+              aria-label="Wishlist"
+            >
+              <Heart className="w-5 h-5" />
+              {wishlistItems.length > 0 && (
+                <span className="absolute -top-1 -right-1 min-w-[16px] px-1 h-4 rounded-full bg-pink-500 text-[10px] text-white flex items-center justify-center">
+                  {wishlistItems.length}
+                </span>
+              )}
+            </Link>
+
+            {/* Account */}
+            <Link
+              to={user ? "/account" : "/login"}
+              className="relative text-slate-200 hover:text-white"
+              aria-label="Account"
+            >
+              <User className="w-5 h-5" />
+            </Link>
+
+            {/* Cart */}
+            <Link
+              to="/cart"
+              className="relative text-slate-200 hover:text-white"
+              aria-label="Cart"
+            >
+              <ShoppingCart className="w-5 h-5" />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 min-w-[16px] px-1 h-4 rounded-full bg-emerald-500 text-[10px] text-white flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
           </div>
-
-          <button className="p-2 hover:bg-slate-800 rounded-lg">
-            <Globe className="h-5 w-5" />
-          </button>
-
-          <Link
-            to="/cart"
-            className="relative p-2 hover:bg-slate-800 rounded-lg"
-          >
-            <ShoppingCart className="h-5 w-5" />
-            {cartCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-purple-600 text-white text-[10px] h-4 w-4 rounded-full flex items-center justify-center">
-                {cartCount}
-              </span>
-            )}
-          </Link>
-
-          <Link
-            to={user ? "/account" : "/login"}
-            className="border border-slate-700 px-4 py-2 rounded-lg text-sm"
-          >
-            {authLoading ? "•••" : user ? "Account" : "Login"}
-          </Link>
         </div>
       </div>
     </header>
